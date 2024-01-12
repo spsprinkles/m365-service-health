@@ -1,0 +1,87 @@
+import { DisplayMode, Environment, Version } from '@microsoft/sp-core-library';
+import { IPropertyPaneConfiguration, PropertyPaneTextField } from '@microsoft/sp-property-pane';
+import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
+import { IReadonlyTheme } from '@microsoft/sp-component-base';
+import * as strings from 'M365ServiceHealthWebPartStrings';
+
+export interface IM365ServiceHealthWebPartProps {
+  description: string;
+  webUrl: string;
+}
+
+// Reference the solution
+import "../../../../dist/m365-service-health.min.js";
+declare const M365ServiceHealth: {
+  description: string;
+  render: (props: {
+    el: HTMLElement;
+    context?: WebPartContext;
+    displayMode?: DisplayMode;
+    envType?: number;
+    sourceUrl?: string;
+  }) => void;
+  updateTheme: (currentTheme: Partial<IReadonlyTheme>) => void;
+  version: string;
+};
+
+export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM365ServiceHealthWebPartProps> {
+  private _hasRendered: boolean = false;
+
+  public render(): void {
+    // See if have rendered the solution
+    if (this._hasRendered) {
+      // Clear the element
+      while (this.domElement.firstChild) { this.domElement.removeChild(this.domElement.firstChild); }
+    }
+
+    // Set the default property values
+    if (!this.properties.webUrl) { this.properties.webUrl = this.context.pageContext.web.serverRelativeUrl; }
+
+    // Render the application
+    M365ServiceHealth.render({
+      el: this.domElement,
+      context: this.context,
+      displayMode: this.displayMode,
+      envType: Environment.type,
+      sourceUrl: this.properties.webUrl
+    });
+
+    // Set the flag
+    this._hasRendered = true;
+  }
+
+  protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {
+    if (!currentTheme) {
+      return;
+    }
+
+    // Update the theme
+    M365ServiceHealth.updateTheme(currentTheme);
+  }
+
+  protected get dataVersion(): Version {
+    return Version.parse(M365ServiceHealth.version);
+  }
+
+  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+    return {
+      pages: [
+        {
+          groups: [
+            {
+              groupName: strings.BasicGroupName,
+              groupFields: [
+                PropertyPaneTextField('description', {
+                  label: strings.DescriptionFieldLabel
+                })
+              ]
+            }
+          ],
+          header: {
+            description: M365ServiceHealth.description
+          }
+        }
+      ]
+    };
+  }
+}

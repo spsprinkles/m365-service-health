@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "m365-service-health",
+    "id": "a57dae0b-0614-4f78-9c7f-e017eb4b5df8",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.17.4"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "m365-service-health description"
+      },
+      "longDescription": {
+        "default": "m365-service-health description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "m365-service-health Feature",
+        "description": "The feature that activates elements of the m365-service-health solution.",
+        "id": "b258522d-5804-4c72-af43-24811a456e02",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "../../dist/m365-service-health.sppkg"
+  }
+}
