@@ -19,7 +19,7 @@ const Strings = {
     GlobalVariable: "M365ServiceHealth",
     IsClassic: true,
     Lists: {
-        Main: "M365ServiceHealth"
+        Main: "M365 Service Health"
     },
     ProjectName: "M365 Service Health",
     ProjectDescription: "A webpart showing M365 Service Health for all users.",
