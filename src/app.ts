@@ -53,7 +53,15 @@ export class App {
                 ]
             },
             tiles: {
-                items: DataSource.ListItems
+                items: DataSource.ListItems,
+                bodyField: "ServiceId",
+                filterField: "ServiceStatus",
+                subTitleField: "ServiceStatus",
+                titleField: "Title",
+                onCardRender: el => {
+                    // Render the issues
+                    // TODO
+                }
             },
             footer: {
                 itemsEnd: [
@@ -62,6 +70,6 @@ export class App {
                     }
                 ]
             }
-       });
+        });
     }
 }
