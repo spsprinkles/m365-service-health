@@ -20,6 +20,13 @@ export const Configuration = Helper.SPConfig({
                     required: true
                 },
                 {
+                    name: "ServiceIssues",
+                    title: "Service Issues",
+                    type: Helper.SPCfgFieldType.Note,
+                    noteType: SPTypes.FieldNoteType.TextOnly,
+                    unlimited: true
+                } as Helper.IFieldInfoNote,
+                {
                     name: "ServiceStatus",
                     title: "Service Status",
                     type: Helper.SPCfgFieldType.Choice,
@@ -31,14 +38,7 @@ export const Configuration = Helper.SPConfig({
                         "Investigation suspended", "Service restored", "False positive",
                         "Post-incident report published"
                     ]
-                } as Helper.IFieldInfoChoice,
-                {
-                    name: "ServiceIssues",
-                    title: "Service Issues",
-                    type: Helper.SPCfgFieldType.Note,
-                    noteType: SPTypes.FieldNoteType.TextOnly,
-                    unlimited: true
-                } as Helper.IFieldInfoNote
+                } as Helper.IFieldInfoChoice
             ],
             ViewInformation: [
                 {

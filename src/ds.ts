@@ -7,7 +7,9 @@ import Strings from "./strings";
  * Add your custom fields here
  */
 export interface IListItem extends Types.SP.ListItem {
-    Status: string;
+    ServiceId: string;
+    ServiceIssues: string;
+    ServiceStatus: string;
 }
 
 /**
