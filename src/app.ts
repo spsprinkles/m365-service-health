@@ -218,6 +218,7 @@ export class App {
             tiles: {
                 items: DataSource.ListItems,
                 bodyField: "ServiceId",
+                colSize: 4,
                 filterField: "ServiceStatus",
                 subTitleField: "ServiceStatus",
                 titleField: "Title",
