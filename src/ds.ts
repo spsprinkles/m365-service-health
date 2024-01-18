@@ -1,5 +1,6 @@
 import { List } from "dattatable";
-import { Components, Types, Web } from "gd-sprest-bs";
+import { Components, Types } from "gd-sprest-bs";
+import { Security } from "./security";
 import Strings from "./strings";
 
 /**
@@ -16,12 +17,41 @@ export interface IListItem extends Types.SP.ListItem {
  * Data Source
  */
 export class DataSource {
-    // List
+    // Initializes the application
+    static init(): PromiseLike<any> {
+        // Return a promise
+        return new Promise((resolve, reject) => {
+            return Promise.all([
+                // Load the security
+                Security.init(),
+                // Load the data
+                this.load(),
+                // Load the Status Filters
+                this.loadStatusFilters()
+            ]).then(resolve, reject);
+        });
+    }
+
+    // Loads the list data
     private static _list: List<IListItem> = null;
     static get List(): List<IListItem> { return this._list; }
-
-    // List Items
     static get ListItems(): IListItem[] { return this.List.Items; }
+    static load(): PromiseLike<void> {
+        // Return a promise
+        return new Promise((resolve, reject) => {
+            // Initialize the list
+            this._list = new List<IListItem>({
+                listName: Strings.Lists.Main,
+                itemQuery: {
+                    GetAllItems: true,
+                    OrderBy: ["Title"],
+                    Top: 5000
+                },
+                onInitError: reject,
+                onInitialized: resolve
+            });
+        });
+    }
 
     // Status Filters
     private static _statusFilters: Components.ICheckboxGroupItem[] = null;
@@ -50,30 +80,6 @@ export class DataSource {
                 // Reject the request
                 reject("The status field is missing.");
             }
-        });
-    }
-
-    // Initializes the application
-    static init(): PromiseLike<void> {
-        // Return a promise
-        return new Promise((resolve, reject) => {
-            // Initialize the list
-            this._list = new List<IListItem>({
-                listName: Strings.Lists.Main,
-                itemQuery: {
-                    GetAllItems: true,
-                    OrderBy: ["Title"],
-                    Top: 5000
-                },
-                onInitError: reject,
-                onInitialized: () => {
-                    // Load the status filters
-                    this.loadStatusFilters().then(() => {
-                        // Resolve the request
-                        resolve();
-                    }, reject);
-                }
-            });
         });
     }
 
