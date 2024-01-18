@@ -12,10 +12,24 @@ export class InstallationModal {
     static show(showFl: boolean = false) {
         // See if an installation is required
         InstallationRequired.requiresInstall({ cfg: Configuration }).then(installFl => {
+            let errors: Components.IListGroupItem[] = [];
+
+            // See if security is setup
+            if (Security.AdminGroup == null || Security.MemberGroup == null || Security.VisitorGroup == null) {
+                // Update the show flag
+                showFl = true;
+
+                // Add a custom error
+                errors.push({
+                    content: "The security groups have not been initialized."
+                });
+            }
+
             // See if an install is required
             if (installFl || showFl) {
                 // Show the dialog
                 InstallationRequired.showDialog({
+                    errors,
                     onFooterRendered: el => {
                         // See if the security group doesn't exist
                         if (showFl) {

@@ -25,9 +25,7 @@ export class DataSource {
                 // Load the security
                 Security.init(),
                 // Load the data
-                this.load(),
-                // Load the Status Filters
-                this.loadStatusFilters()
+                this.load()
             ]).then(resolve, reject);
         });
     }
@@ -48,7 +46,13 @@ export class DataSource {
                     Top: 5000
                 },
                 onInitError: reject,
-                onInitialized: resolve
+                onInitialized: () => {
+                    // Load the Status Filters
+                    this.loadStatusFilters()
+
+                    // Resolve the request
+                    resolve();
+                }
             });
         });
     }
@@ -56,31 +60,24 @@ export class DataSource {
     // Status Filters
     private static _statusFilters: Components.ICheckboxGroupItem[] = null;
     static get StatusFilters(): Components.ICheckboxGroupItem[] { return this._statusFilters; }
-    static loadStatusFilters(): PromiseLike<Components.ICheckboxGroupItem[]> {
-        // Return a promise
-        return new Promise((resolve, reject) => {
-            // Get the status field choices
-            let field = this.List.getField("ServiceStatus") as Types.SP.FieldChoice;
-            if (field) {
-                let items: Components.ICheckboxGroupItem[] = [];
+    static loadStatusFilters() {
+        // Get the status field choices
+        let field = this.List.getField("ServiceStatus") as Types.SP.FieldChoice;
+        if (field) {
+            let items: Components.ICheckboxGroupItem[] = [];
 
-                // Parse the choices
-                for (let i = 0; i < field.Choices.results.length; i++) {
-                    // Add an item
-                    items.push({
-                        label: field.Choices.results[i],
-                        type: Components.CheckboxGroupTypes.Switch
-                    });
-                }
-
-                // Set the filters and resolve the promise
-                this._statusFilters = items;
-                resolve(items);
-            } else {
-                // Reject the request
-                reject("The status field is missing.");
+            // Parse the choices
+            for (let i = 0; i < field.Choices.results.length; i++) {
+                // Add an item
+                items.push({
+                    label: field.Choices.results[i],
+                    type: Components.CheckboxGroupTypes.Switch
+                });
             }
-        });
+
+            // Set the filters and resolve the promise
+            this._statusFilters = items;
+        }
     }
 
     // Refreshes the list data
