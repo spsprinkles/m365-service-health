@@ -220,6 +220,7 @@ export class App {
                 bodyField: "ServiceId",
                 colSize: 4,
                 filterField: "ServiceStatus",
+                paginationLimit: 12,
                 subTitleField: "ServiceStatus",
                 titleField: "Title",
                 onBodyRender: (el, item: IListItem) => {
