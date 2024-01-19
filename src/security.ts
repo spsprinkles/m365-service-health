@@ -28,7 +28,6 @@ export class Security {
         // Return a promise
         return new Promise((resolve, reject) => {
             this._listSecurity = new ListSecurity({
-                groups: [],
                 webUrl: Strings.SourceUrl,
                 listItems: [
                     {
