@@ -1,4 +1,13 @@
 /** Custom Styles Go Here */
+.bs {
+    .card {
+        --bs-card-border-width: 2px;
+    }
+    .row {
+        --bs-gutter-x: 1rem;
+    }
+}
+
 #m365-service-health > .dashboard #tiles .tiles-pagination ul.pagination {
     margin-bottom: 0;
 }
@@ -18,7 +27,11 @@ nav.footer #navbar_content {
     border: 2px solid var(--sp-neutral-quaternary);
     border-top: 0;
     border-radius: 0 0 .25rem .25rem;
-    margin-bottom: .5rem;
+}
+
+#tiles .card {
+    margin-top: 1rem;
+    min-height: 10rem;
 }
 
 /* Apply changes to the Settings Panel */
