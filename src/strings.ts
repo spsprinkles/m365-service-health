@@ -26,6 +26,6 @@ const Strings = {
     SourceUrl: ContextInfo.webServerRelativeUrl,
     TileColumnSize: 4,
     TilePageSize: 12,
-    Version: "0.1"
+    Version: "0.0.1"
 };
 export default Strings;
