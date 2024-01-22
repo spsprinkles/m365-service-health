@@ -274,6 +274,11 @@ export class App {
                 },
                 onHeaderRendered: (el) => {
                     el.classList.add("d-none");
+                },
+                onPaginationRendered: (el) => {
+                    let nav = el.querySelector("nav") as HTMLElement;
+                    nav ? nav.classList.remove("pt-2") : null;
+                    nav ? nav.classList.add("pt-3") : null;
                 }
             }
         });
