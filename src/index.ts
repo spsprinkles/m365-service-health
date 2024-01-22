@@ -67,6 +67,8 @@ const GlobalVariable = {
             }
         );
     },
+    tileColumnSize: Strings.TileColumnSize,
+    tilePageSize: Strings.TilePageSize,
     updateTheme: (themeInfo) => {
         // Set the theme
         ThemeManager.setCurrentTheme(themeInfo);
