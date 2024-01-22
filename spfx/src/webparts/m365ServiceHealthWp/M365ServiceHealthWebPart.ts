@@ -1,11 +1,12 @@
 import { DisplayMode, Environment, Version } from '@microsoft/sp-core-library';
-import { IPropertyPaneConfiguration, PropertyPaneTextField } from '@microsoft/sp-property-pane';
+import { IPropertyPaneConfiguration, PropertyPaneLabel, PropertyPaneSlider } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as strings from 'M365ServiceHealthWebPartStrings';
 
 export interface IM365ServiceHealthWebPartProps {
-  description: string;
+  tileColumnSize: number;
+  tilePageSize: number;
   webUrl: string;
 }
 
@@ -18,8 +19,12 @@ declare const M365ServiceHealth: {
     context?: WebPartContext;
     displayMode?: DisplayMode;
     envType?: number;
+    tileColumnSize?: number;
+    tilePageSize?: number;
     sourceUrl?: string;
   }) => void;
+  tileColumnSize: number;
+  tilePageSize: number;
   updateTheme: (currentTheme: Partial<IReadonlyTheme>) => void;
   version: string;
 };
@@ -35,6 +40,8 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
     }
 
     // Set the default property values
+    if (!this.properties.tileColumnSize) { this.properties.tileColumnSize = M365ServiceHealth.tileColumnSize; }
+    if (!this.properties.tilePageSize) { this.properties.tilePageSize = M365ServiceHealth.tilePageSize; }
     if (!this.properties.webUrl) { this.properties.webUrl = this.context.pageContext.web.serverRelativeUrl; }
 
     // Render the application
@@ -43,6 +50,8 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
       context: this.context,
       displayMode: this.displayMode,
       envType: Environment.type,
+      tileColumnSize: this.properties.tileColumnSize,
+      tilePageSize: this.properties.tilePageSize,
       sourceUrl: this.properties.webUrl
     });
 
@@ -69,10 +78,21 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
         {
           groups: [
             {
-              groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
+                PropertyPaneSlider('tileColumnSize', {
+                  label: strings.TileColumnSizeFieldLabel,
+                  max: 10,
+                  min: 1,
+                  showValue: true
+                }),
+                PropertyPaneSlider('tilePageSize', {
+                  label: strings.TilePageSizeFieldLabel,
+                  max: 30,
+                  min: 1,
+                  showValue: true
+                }),
+                PropertyPaneLabel('version', {
+                  text: "v" + M365ServiceHealth.version
                 })
               ]
             }

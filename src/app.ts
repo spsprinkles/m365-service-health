@@ -178,7 +178,7 @@ export class App {
                     props.className = "navbar-sub rounded-bottom";
                 },
                 onRendered: (el) => {
-                    el.classList.remove("bg-light");
+                    el.querySelector("nav.navbar").classList.remove("bg-light");
                 },
                 itemsEnd: [
                     {
@@ -218,9 +218,9 @@ export class App {
             tiles: {
                 items: DataSource.ListItems,
                 bodyField: "ServiceId",
-                colSize: 4,
+                colSize: Strings.TileColumnSize,
                 filterField: "ServiceStatus",
-                paginationLimit: 12,
+                paginationLimit: Strings.TilePageSize,
                 subTitleField: "ServiceStatus",
                 titleField: "Title",
                 onBodyRendered: (el, item: IListItem) => {
@@ -268,6 +268,12 @@ export class App {
                             }
                         });
                     }
+                },
+                onFooterRendered: (el) => {
+                    el.classList.add("d-none");
+                },
+                onHeaderRendered: (el) => {
+                    el.classList.add("d-none");
                 }
             }
         });

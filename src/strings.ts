@@ -24,6 +24,8 @@ const Strings = {
     ProjectName: "M365 Service Health",
     ProjectDescription: "A webpart showing M365 Service Health for all users.",
     SourceUrl: ContextInfo.webServerRelativeUrl,
+    TileColumnSize: 4,
+    TilePageSize: 12,
     Version: "0.1"
 };
 export default Strings;

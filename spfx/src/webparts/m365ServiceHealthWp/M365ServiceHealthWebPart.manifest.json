@@ -22,7 +22,8 @@
     "description": { "default": "m365-service-health description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "m365-service-health"
+      "tileColumnSize": 4,
+      "tilePageSize": 12
     }
   }]
 }

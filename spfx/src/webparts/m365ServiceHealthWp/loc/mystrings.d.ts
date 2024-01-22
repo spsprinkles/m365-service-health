@@ -1,7 +1,7 @@
 declare interface IM365ServiceHealthWebPartStrings {
   PropertyPaneDescription: string;
-  BasicGroupName: string;
-  DescriptionFieldLabel: string;
+  TileColumnSizeFieldLabel: string;
+  TilePageSizeFieldLabel: string;
   AppLocalEnvironmentSharePoint: string;
   AppLocalEnvironmentTeams: string;
   AppLocalEnvironmentOffice: string;

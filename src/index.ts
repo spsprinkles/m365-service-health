@@ -16,6 +16,8 @@ interface IProps {
     context?: any;
     displayMode?: number;
     envType?: number;
+    tileColumnSize?: number;
+    tilePageSize?: number;
     sourceUrl?: string;
 }
 
@@ -33,6 +35,12 @@ const GlobalVariable = {
             // Update the configuration
             Configuration.setWebUrl(props.sourceUrl || ContextInfo.webServerRelativeUrl);
         }
+
+        // Update the TileColumnSize from SPFx value
+        props.tileColumnSize ? Strings.TileColumnSize = props.tileColumnSize : null;
+
+        // Update the TilePageSize from SPFx value
+        props.tilePageSize ? Strings.TilePageSize = props.tilePageSize : null;
 
         // Initialize the application
         DataSource.init().then(
