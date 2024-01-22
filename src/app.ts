@@ -223,7 +223,7 @@ export class App {
                 paginationLimit: 12,
                 subTitleField: "ServiceStatus",
                 titleField: "Title",
-                onBodyRender: (el, item: IListItem) => {
+                onBodyRendered: (el, item: IListItem) => {
                     // See if issues exist
                     let issues = item.ServiceIssues ? JSON.parse(item.ServiceIssues) : null;
                     if (issues && issues.length > 0) {
