@@ -1,7 +1,7 @@
 define([], function() {
   return {
     "PropertyPaneDescription": "Description",
-    "TileColumnSizeFieldLabel": "Items per Column",
+    "TileColumnSizeFieldLabel": "Columns per row",
     "TilePageSizeFieldLabel": "Items per Page",
     "AppLocalEnvironmentSharePoint": "The app is running on your local environment as SharePoint web part",
     "AppLocalEnvironmentTeams": "The app is running on your local environment as Microsoft Teams app",

@@ -81,7 +81,7 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
               groupFields: [
                 PropertyPaneSlider('tileColumnSize', {
                   label: strings.TileColumnSizeFieldLabel,
-                  max: 10,
+                  max: 6,
                   min: 1,
                   showValue: true
                 }),
