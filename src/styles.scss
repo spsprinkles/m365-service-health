@@ -38,7 +38,7 @@ nav.navbar-sub {
 }
 
 /* Apply changes to the Settings Panel */
-div.spPropertyPaneContainer div[aria-label='m365-service-health property pane'] div[data-automation-id='propertyPaneGroupContent'] {
+div.spPropertyPaneContainer div[aria-label='M365 Service Health property pane'] div[data-automation-id='propertyPaneGroupContent'] {
     /* Align version to the right */
     >div:last-child label {
         text-align: right;

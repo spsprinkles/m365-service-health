@@ -18,9 +18,10 @@
   "preconfiguredEntries": [{
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Advanced
     "group": { "default": "Advanced" },
-    "title": { "default": "m365-service-health" },
-    "description": { "default": "m365-service-health description" },
+    "title": { "default": "M365 Service Health" },
+    "description": { "default": "A webpart showing M365 Service Health for all users." },
     "officeFabricIconFontName": "Page",
+    "iconImageUrl": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgZmlsbD0iY3VycmVudENvbG9yIiBjbGFzcz0iYmkgYmktd3JlbmNoLWFkanVzdGFibGUtY2lyY2xlIiB2aWV3Qm94PSIwIDAgMTYgMTYiPgogIDxwYXRoIGQ9Ik0xMi40OTYgOGE0LjUgNC41IDAgMCAxLTEuNzAzIDMuNTI2TDkuNDk3IDguNWwyLjk1OS0xLjExcS4wNC4zLjA0LjYxIi8+CiAgPHBhdGggZD0iTTE2IDhBOCA4IDAgMSAxIDAgOGE4IDggMCAwIDEgMTYgMG0tMSAwYTcgNyAwIDEgMC0xMy4yMDIgMy4yNDlsMS45ODgtMS42NTdhNC41IDQuNSAwIDAgMSA3LjUzNy00LjYyM0w3LjQ5NyA2LjVsMSAyLjUgMS4zMzMgMy4xMWMtLjU2LjI1MS0xLjE4LjM5LTEuODMzLjM5YTQuNSA0LjUgMCAwIDEtMS41OTItLjI5TDQuNzQ3IDE0LjJBNyA3IDAgMCAwIDE1IDhtLTguMjk1LjEzOWEuMjUuMjUgMCAwIDAtLjI4OC0uMzc2bC0xLjUuNS4xNTkuNDc0LjgwOC0uMjctLjU5NS44OTRhLjI1LjI1IDAgMCAwIC4yODcuMzc2bC44MDgtLjI3LS41OTUuODk0YS4yNS4yNSAwIDAgMCAuMjg3LjM3NmwxLjUtLjUtLjE1OS0uNDc0LS44MDguMjcuNTk2LS44OTRhLjI1LjI1IDAgMCAwLS4yODgtLjM3NmwtLjgwOC4yN3oiLz4KPC9zdmc+",
     "properties": {
       "tileColumnSize": 4,
       "tilePageSize": 12

@@ -2,6 +2,7 @@ import { Dashboard, Modal } from "dattatable";
 import { Components } from "gd-sprest-bs";
 import { filterSquare } from "gd-sprest-bs/build/icons/svgs/filterSquare";
 import { gearWideConnected } from "gd-sprest-bs/build/icons/svgs/gearWideConnected";
+import { wrenchAdjustableCircle } from "gd-sprest-bs/build/icons/svgs/wrenchAdjustableCircle";
 import { DataSource, IListItem } from "./ds";
 import { InstallationModal } from "./install";
 import { Security } from "./security";
@@ -165,7 +166,7 @@ export class App {
                     div.className = "d-flex";
                     text.className = "ms-2";
                     text.append(Strings.ProjectName);
-                    div.appendChild(this.getM365Icon(32, 32, "m365-logo"));
+                    div.appendChild(wrenchAdjustableCircle(32, 32, 'brand'));
                     div.appendChild(text);
                     props.brand = div;
                 },
