@@ -2,10 +2,10 @@ import { Dashboard, Modal } from "dattatable";
 import { Components } from "gd-sprest-bs";
 import { filterSquare } from "gd-sprest-bs/build/icons/svgs/filterSquare";
 import { gearWideConnected } from "gd-sprest-bs/build/icons/svgs/gearWideConnected";
-import { wrenchAdjustableCircle } from "gd-sprest-bs/build/icons/svgs/wrenchAdjustableCircle";
 import { DataSource, IListItem } from "./ds";
 import { InstallationModal } from "./install";
 import { Security } from "./security";
+import { getIcon } from "./common";
 import Strings from "./strings";
 
 /**
@@ -125,7 +125,7 @@ export class App {
                     div.className = "d-flex";
                     text.className = "ms-2";
                     text.append(Strings.ProjectName);
-                    div.appendChild(wrenchAdjustableCircle(32, 32, 'brand'));
+                    div.appendChild(getIcon(32, 32, 'ServiceHealth'));
                     div.appendChild(text);
                     props.brand = div;
                 },
@@ -181,6 +181,7 @@ export class App {
                 colSize: Strings.TileColumnSize,
                 filterField: "ServiceStatus",
                 paginationLimit: Strings.TilePageSize,
+                showFooter: false,
                 subTitleField: "ServiceStatus",
                 titleField: "Title",
                 onBodyRendered: (el, item: IListItem) => {
@@ -229,11 +230,67 @@ export class App {
                         });
                     }
                 },
-                onFooterRendered: (el) => {
-                    el.classList.add("d-none");
-                },
-                onHeaderRendered: (el) => {
-                    el.classList.add("d-none");
+                onHeaderRendered: (el, item: IListItem) => {
+                    el.classList.add("text-center");
+                    let serviceId = item.ServiceId;
+                    switch (item.ServiceId) {
+                        case "cloudappsecurity":
+                            serviceId = "SecurityCenter";
+                            break;
+                        case "DynamicsCRM":
+                            serviceId = "Dynamics";
+                            break;
+                        case "Lync":
+                            serviceId = "Skype";
+                            break;
+                        case "Microsoft365Defender":
+                            serviceId = "Defender";
+                            break;
+                        case "MicrosoftFlow":
+                        case "MicrosoftFlowM365":
+                            serviceId = "PowerAutomate";
+                            break;
+                        case "microsoftteams":
+                            serviceId = "Teams";
+                            break;
+                        case "MobileDeviceManagement":
+                            serviceId = "MDM";
+                            break;
+                        case "O365Client":
+                            serviceId = "Office";
+                            break;
+                        case "officeonline":
+                            serviceId = "OfficeOnline";
+                            break;
+                        case "OneDriveForBusiness":
+                            serviceId = "OneDrive";
+                            break;
+                        case "OrgLiveID":
+                            serviceId = "Entra";
+                            break;
+                        case "OSDPPlatform":
+                            serviceId = "M365";
+                            break;
+                        case "PAM":
+                            serviceId = "KeyVault";
+                            break;
+                        case "PowerAppsM365":
+                            serviceId = "PowerApps";
+                            break;
+                        case "PowerBIcom":
+                            serviceId = "PowerBI";
+                            break;
+                        case "ProjectForTheWeb":
+                            serviceId = "Project";
+                            break;
+                        case "RMS":
+                            serviceId = "AIP";
+                            break;
+                        case "SwayEnterprise":
+                            serviceId = "Sway";
+                            break;
+                    }
+                    el.appendChild(getIcon(32, 32, serviceId));
                 },
                 onPaginationRendered: (el) => {
                     let nav = el.querySelector("nav") as HTMLElement;
