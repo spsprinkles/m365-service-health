@@ -28,6 +28,20 @@ const icons = new Map<string, string>([
     ["Viva", "<svg width='32' height='32' viewBox='0 0 512 512' fill='none' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='viva_paint0' x1='322.245' y1='185.503' x2='252.611' y2='3.12093' gradientUnits='userSpaceOnUse'><stop stop-color='#5077CB'/><stop offset='1' stop-color='#72E4ED'/></linearGradient><linearGradient id='viva_paint1' x1='252.665' y1='383.056' x2='431.786' y2='146.732' gradientUnits='userSpaceOnUse'><stop stop-color='#213781'/><stop offset='0.667497' stop-color='#6C7EE5'/><stop offset='0.980043' stop-color='#B7A1ED'/></linearGradient><linearGradient id='viva_paint2' x1='82.0333' y1='235.679' x2='179.661' y2='533.566' gradientUnits='userSpaceOnUse'><stop stop-color='#4AA5D9'/><stop offset='0.562399' stop-color='#436DCD'/><stop offset='0.999411' stop-color='#213781'/></linearGradient></defs><path d='M181.033 180.953C222.429 222.349 289.545 222.349 330.94 180.953C372.336 139.558 372.336 72.4423 330.94 31.0467C289.545 -10.3489 222.429 -10.3489 181.033 31.0467C139.638 72.4422 139.638 139.558 181.033 180.953Z' fill='url(#viva_paint0)'/><path d='M384 444.86L507.427 292.189C513.576 284.521 513.646 273.634 506.894 266.468C434.679 189.834 326.184 194.07 257.966 279.148L128 444.86C199.78 534.381 312.22 534.381 384 444.86Z' fill='url(#viva_paint1)'/><path d='M128 444.86L4.5719 292.187C-1.57575 284.519 -1.64611 273.633 5.10621 266.467C77.3207 189.835 185.815 194.07 254.033 279.145L384 444.86C312.221 534.378 199.78 534.377 128 444.86Z' fill='url(#viva_paint2)'/></svg>"]
 ]);
 
+const statusDescription = new Map<string, string>([
+    ["Operational", "The service is healthy and no issues have been identified."],
+    ["Investigating", "A potential issue was identified and more information is being gathered about what's going on and the scope of impact."],
+    ["Restoring Service", "The cause of the issue has been identified, and action is being taken to bring the service back to a healthy state."],
+    ["Verifying Service", "The action has been taken to mitigate the issue and we have verified that the service is healthy."],
+    ["Service Restored", "The corrective action has resolved the underlying problem and the service has been restored to a healthy state. To find out what went wrong, view the issue details."],
+    ["Post-incident Report Published", "A post-incident report for a specific issue that includes root cause information has been published, with next steps to ensure a similar issue doesn't reoccur."],
+    ["Service Degradation", "An issue is confirmed that may affect use of a service or feature. You might see this status if a service is performing more slowly than usual, there are intermittent interruptions, or if a feature isn't working, for example."],
+    ["Service Interruption", "You'll see this status if an issue is determined to affect the ability for users to access the service. In this case, the issue is significant and can be reproduced consistently."],
+    ["Extended Recovery", "This status indicates that corrective action is in progress to restore the service to most users but will take some time to reach all the affected systems. You might also see this status if a temporary fix is made to reduce impact while a permanent fix is waiting to be applied."],
+    ["False Positive", "After a detailed investigation, the service is confirmed to be healthy and operating as designed. No impact to the service was observed or the cause of the incident originated outside of the service. Incidents and advisories with this status appear in the history view until they expire (after the period of time stated in the final post for that event)."],
+    ["Investigation Suspended", "If our detailed investigation of a potential issue results in a request for additional information from customers to allow the service team to investigate further, you'll see this status. If service team needs you to act, they'll let you know what data or logs they need."]
+]);
+
 // Returns an icon as an SVG element
 export function getIcon(height?, width?, iconName?, className?) {
     // Get the icon element
@@ -56,4 +70,10 @@ export function getIcon(height?, width?, iconName?, className?) {
     }
     // Return the icon
     return icon;
+}
+
+// Returns a description of the status value
+export function getStatusDescription(statusValue?) {
+    // Return the status description
+    return (statusValue && statusDescription.has(statusValue)) ? statusDescription.get(statusValue) : statusDescription.get('Operational');
 }
