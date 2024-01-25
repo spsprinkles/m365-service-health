@@ -357,6 +357,9 @@ export class App {
                                 text: btnText,
                                 type: Components.ButtonTypes.Link,
                                 onClick: () => {
+                                    // Clear the modal
+                                    Modal.clear();
+                                    
                                     // Set the modal header
                                     Modal.setHeader(item.Title + " Issues");
 
