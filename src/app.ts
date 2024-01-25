@@ -313,7 +313,7 @@ export class App {
                             }
                         } else if (advisory > 0) {
                             // Render the advisory icon
-                            div.classList.add("text-primary");
+                            div.classList.add("text-blue");
                             div.appendChild(infoCircleFill(20, 20));
                             Components.Tooltip({
                                 content: "<b>Advisory:</b> A minor service issue with limited impact.",

@@ -17,6 +17,9 @@
     .row {
         --bs-gutter-x: 1rem;
     }
+    .text-blue {
+        color: var(--sp-blue, #0078d4) !important;
+    }
 }
 
 #m365-service-health > .dashboard #tiles .tiles-pagination ul.pagination {
