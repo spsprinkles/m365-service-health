@@ -33,10 +33,10 @@ export const Configuration = Helper.SPConfig({
                     defaultValue: "Operational",
                     required: true,
                     choices: [
-                        "Operational", "Investigating", "Degradation",
-                        "Interruption", "Restoring service", "Extended recovery",
-                        "Investigation suspended", "Restored", "False positive",
-                        "Post-incident report published"
+                        "Operational", "Investigating", "Service Degradation",
+                        "Service Interruption", "Restoring Service", "Verifying Service",
+                        "Extended Recovery","Investigation Suspended", "Service Restored",
+                        "False Positive", "Post-incident Report Published"
                     ]
                 } as Helper.IFieldInfoChoice
             ],
