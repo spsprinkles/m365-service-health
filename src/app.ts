@@ -9,7 +9,7 @@ import { xCircleFill } from "gd-sprest-bs/build/icons/svgs/xCircleFill";
 import { DataSource, IListItem } from "./ds";
 import { InstallationModal } from "./install";
 import { Security } from "./security";
-import { getIcon } from "./common";
+import { getIcon, getStatusDescription } from "./common";
 import Strings from "./strings";
 
 /**
@@ -193,6 +193,17 @@ export class App {
                     if (text) {
                         text.classList.add("mt-2");
                         text.innerHTML = "<b>Status:</b> " + item.ServiceStatus;
+                        let p = document.createElement("p");
+                        p.className = "mb-0 mt-1 small";
+                        p.textContent = getStatusDescription(item.ServiceStatus);
+                        text.appendChild(p);
+                        if (getStatusDescription(item.ServiceStatus).length > 75) {
+                            Components.Tooltip({
+                                content: getStatusDescription(item.ServiceStatus),
+                                type: Components.TooltipTypes.LightBorder,
+                                target: p
+                            });
+                        }
                     }
                 },
                 onHeaderRendered: (el, item: IListItem) => {
@@ -255,7 +266,14 @@ export class App {
                             serviceId = "Sway";
                             break;
                     }
-                    el.appendChild(getIcon(32, 32, serviceId));
+                    let icon = getIcon(32, 32, serviceId);
+                    icon.style.pointerEvents = "auto";
+                    Components.Tooltip({
+                        content: item.Title,
+                        type: Components.TooltipTypes.LightBorder,
+                        target: icon as any
+                    });
+                    el.appendChild(icon);
                 },
                 onPaginationRendered: (el) => {
                     let nav = el.querySelector("nav") as HTMLElement;
