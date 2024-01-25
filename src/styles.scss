@@ -8,11 +8,21 @@
         --bs-card-spacer-y: .5rem;
         --bs-card-title-spacer-y: 1.25rem;
         margin-top: 1rem;
-        min-height: 12rem;
+        min-height: 12.5rem;
+    }
+    .card-text p.small {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
     }
     .card-title {
         border-bottom: 1px solid var(--sp-neutral-quaternary);
-        padding-bottom: .5rem;
+        display: -webkit-box;
+        overflow: hidden;
+        padding-bottom: .25rem;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
     }
     .row {
         --bs-gutter-x: 1rem;
