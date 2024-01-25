@@ -1,9 +1,12 @@
 /** Custom Styles Go Here */
 .bs {
+    .btn-link {
+        min-width: 4rem;
+    }
     .card {
         --bs-card-border-width: 2px;
         --bs-card-spacer-y: .5rem;
-        --bs-card-title-spacer-y: 1rem;
+        --bs-card-title-spacer-y: 1.25rem;
         margin-top: 1rem;
         min-height: 10rem;
     }
