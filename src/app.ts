@@ -1,7 +1,11 @@
 import { Dashboard, Modal } from "dattatable";
 import { Components } from "gd-sprest-bs";
+import { checkCircleFill } from "gd-sprest-bs/build/icons/svgs/checkCircleFill";
+import { exclamationTriangleFill } from "gd-sprest-bs/build/icons/svgs/exclamationTriangleFill";
 import { filterSquare } from "gd-sprest-bs/build/icons/svgs/filterSquare";
 import { gearWideConnected } from "gd-sprest-bs/build/icons/svgs/gearWideConnected";
+import { infoCircleFill } from "gd-sprest-bs/build/icons/svgs/infoCircleFill";
+import { xCircleFill } from "gd-sprest-bs/build/icons/svgs/xCircleFill";
 import { DataSource, IListItem } from "./ds";
 import { InstallationModal } from "./install";
 import { Security } from "./security";
@@ -177,57 +181,18 @@ export class App {
             },
             tiles: {
                 items: DataSource.ListItems,
-                bodyField: "ServiceId",
+                bodyField: "ServiceStatus",
                 colSize: Strings.TileColumnSize,
                 filterField: "ServiceStatus",
                 paginationLimit: Strings.TilePageSize,
                 showFooter: false,
-                subTitleField: "ServiceStatus",
+                subTitleField: "ServiceId",
                 titleField: "Title",
                 onBodyRendered: (el, item: IListItem) => {
-                    // See if issues exist
-                    let issues = item.ServiceIssues ? JSON.parse(item.ServiceIssues) : null;
-                    if (issues && issues.length > 0) {
-                        // Render a button to show the issues
-                        Components.Tooltip({
-                            el,
-                            content: "Click to view the issues with this service.",
-                            btnProps: {
-                                text: "Issues",
-                                type: Components.ButtonTypes.OutlineWarning,
-                                onClick: () => {
-                                    // Set the modal header
-                                    Modal.setHeader(item.Title + " Issues");
-
-                                    // Hide the modal footer
-                                    Modal.FooterElement.classList.add("d-none");
-
-                                    // Parse the items
-                                    let items: Components.IListGroupItem[] = [];
-                                    for(let i=0; i<issues.length; i++) {
-                                        let issue = issues[i];
-
-                                        // Add the issue
-                                        items.push({
-                                            content: `
-                                                <b>Title:</b> ${issue.title}<br/>
-                                                <b>Feature:</b> ${issue.feature}<br/>
-                                                <b>Description:</b> ${issue.impactDescription}
-                                            `
-                                        });
-                                    }
-
-                                    // Set the body
-                                    Components.ListGroup({
-                                        el: Modal.BodyElement,
-                                        items
-                                    });
-
-                                    // Show the modal
-                                    Modal.show();
-                                }
-                            }
-                        });
+                    let text = el.querySelector("div.card-text") as HTMLDivElement;
+                    if (text) {
+                        text.classList.add("mt-2");
+                        text.innerHTML = "<b>Status:</b> " + item.ServiceStatus;
                     }
                 },
                 onHeaderRendered: (el, item: IListItem) => {
@@ -296,6 +261,147 @@ export class App {
                     let nav = el.querySelector("nav") as HTMLElement;
                     nav ? nav.classList.remove("pt-2") : null;
                     nav ? nav.classList.add("pt-3") : null;
+                },
+                onSubTitleRendered: (el, item: IListItem) => {
+                    // Clear the element
+                    while (el.firstChild) { el.removeChild(el.firstChild); }
+
+                    // Render a div for the status icon
+                    let div = document.createElement("div");
+                    div.className = "d-inline me-2 mw-fit";
+                    el.appendChild(div);
+
+                    // See if issues exist
+                    let issues = item.ServiceIssues ? JSON.parse(item.ServiceIssues) : null;
+                    if (issues && issues.length > 0) {
+                        let advisory = 0;
+                        let incident = 0;
+                        
+                        // Identify if issues are advisory or incidents
+                        for (let i = 0; i < issues.length; i++) {
+                            if (issues[i].classification == "advisory") { advisory++ };
+                            if (issues[i].classification == "incident") { incident++ };
+                        }
+                        
+                        let btnText = "";
+                        let tooltip = "View the ";
+                        if (incident > 0) {
+                            // Render the incident icon
+                            div.classList.add("text-warning");
+                            div.appendChild(exclamationTriangleFill(20, 20));
+                            Components.Tooltip({
+                                content: "<b>Incident:</b> A critical service issue with noticeable user impact.",
+                                options: { allowHTML: true, maxWidth: 500 },
+                                type: Components.TooltipTypes.LightBorder,
+                                target: div
+                            });
+                            if (incident == 1) {
+                                btnText = incident + " incident";
+                                tooltip += "incident";
+                            } else {
+                                btnText = incident + " incidents";
+                                tooltip += "incidents";
+                            }
+                            if (advisory > 0) {
+                                if (advisory == 1) {
+                                    btnText += ", " + advisory + " advisory";
+                                    tooltip += " & advisory";
+                                } else {
+                                    btnText += ", " + advisory + " advisories";
+                                    tooltip += " & advisories";
+                                }
+                            }
+                        } else if (advisory > 0) {
+                            // Render the advisory icon
+                            div.classList.add("text-primary");
+                            div.appendChild(infoCircleFill(20, 20));
+                            Components.Tooltip({
+                                content: "<b>Advisory:</b> A minor service issue with limited impact.",
+                                options: { allowHTML: true },
+                                type: Components.TooltipTypes.LightBorder,
+                                target: div
+                            });
+                            if (advisory == 1) {
+                                btnText = advisory + " advisory";
+                                tooltip += "advisory";
+                            } else {
+                                btnText = advisory + " advisories";
+                                tooltip += "advisories";
+                            }
+                        } else {
+                            // Render the error icon
+                            div.classList.add("text-danger");
+                            div.appendChild(xCircleFill(20, 20));
+                            Components.Tooltip({
+                                content: "<b>Error:</b> A major service issue with a broad user impact.",
+                                options: { allowHTML: true },
+                                type: Components.TooltipTypes.LightBorder,
+                                target: div
+                            });
+                            if (issues.length == 1) {
+                                btnText = issues.length + " error";
+                                tooltip += "error";
+                            } else {
+                                btnText = issues.length + " errors";
+                                tooltip += "errors";
+                            }
+                        }
+                        tooltip += " for this service";
+
+                        // Render a button to show the issues
+                        Components.Tooltip({
+                            el,
+                            content: tooltip,
+                            btnProps: {
+                                className: "p-0",
+                                text: btnText,
+                                type: Components.ButtonTypes.Link,
+                                onClick: () => {
+                                    // Set the modal header
+                                    Modal.setHeader(item.Title + " Issues");
+
+                                    // Hide the modal footer
+                                    Modal.FooterElement.classList.add("d-none");
+
+                                    // Parse the items
+                                    let items: Components.IListGroupItem[] = [];
+                                    for(let i=0; i<issues.length; i++) {
+                                        let issue = issues[i];
+
+                                        // Add the issue
+                                        items.push({
+                                            content: `
+                                                <b>Title:</b> ${issue.title}<br/>
+                                                <b>Feature:</b> ${issue.feature}<br/>
+                                                <b>Description:</b> ${issue.impactDescription}
+                                            `
+                                        });
+                                    }
+
+                                    // Set the body
+                                    Components.ListGroup({
+                                        el: Modal.BodyElement,
+                                        items
+                                    });
+
+                                    // Show the modal
+                                    Modal.show();
+                                }
+                            }
+                        });
+                    } else {
+                        // Render the healthy icon
+                        div.classList.add("text-success");
+                        div.appendChild(checkCircleFill(20, 20));
+                        Components.Tooltip({
+                            content: "<b>Healthy:</b> No incidents or advisories.",
+                            options: { allowHTML: true },
+                            type: Components.TooltipTypes.LightBorder,
+                            target: div
+                        });
+                        el.append("Healthy");
+                        el.classList.add("fw-normal");
+                    }
                 }
             }
         });
