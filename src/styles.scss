@@ -10,7 +10,7 @@
         margin-top: 1rem;
         min-height: 12.5rem;
     }
-    .card-text p.small {
+    .card-text p.small, .card-title {
         display: -webkit-box;
         overflow: hidden;
         -webkit-box-orient: vertical;
@@ -18,10 +18,7 @@
     }
     .card-title {
         border-bottom: 1px solid var(--sp-neutral-quaternary);
-        display: -webkit-box;
-        overflow: hidden;
         padding-bottom: .25rem;
-        -webkit-box-orient: vertical;
         -webkit-line-clamp: 1;
     }
     .row {
