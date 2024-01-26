@@ -19,6 +19,7 @@ interface IProps {
     tileColumnSize?: number;
     tilePageSize?: number;
     timeFormat?: string;
+    timeZone?: string;
     title?: string;
     sourceUrl?: string;
 }
@@ -44,8 +45,11 @@ const GlobalVariable = {
         // Update the TilePageSize from SPFx value
         props.tilePageSize ? Strings.TilePageSize = props.tilePageSize : null;
 
-        // Update the TilePageSize from SPFx value
+        // Update the TimeFormat from SPFx value
         props.timeFormat ? Strings.TimeFormat = props.timeFormat : null;
+
+        // Update the TimeZone from SPFx value
+        props.timeZone ? Strings.TimeZone = props.timeZone : null;
 
         // Update the ProjectName from SPFx title field
         props.title ? Strings.ProjectName = props.title : null;
@@ -78,6 +82,7 @@ const GlobalVariable = {
     tileColumnSize: Strings.TileColumnSize,
     tilePageSize: Strings.TilePageSize,
     timeFormat: Strings.TimeFormat,
+    timeZone: Strings.TimeZone,
     title: Strings.ProjectName,
     updateTheme: (themeInfo) => {
         // Set the theme

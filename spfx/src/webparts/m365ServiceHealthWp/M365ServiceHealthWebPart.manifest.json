@@ -25,7 +25,8 @@
     "properties": {
       "tileColumnSize": 4,
       "tilePageSize": 12,
-      "timeFormat": "YYYY-MMM-DD HH:mm:ss [GMT]ZZ",
+      "timeFormat": "YYYY-MMM-DD HH:mm:ss zz",
+      "timeZone": "America/New_York",
       "title": "M365 Service Health"
     }
   }]

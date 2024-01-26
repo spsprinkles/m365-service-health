@@ -6,7 +6,7 @@ import { filterSquare } from "gd-sprest-bs/build/icons/svgs/filterSquare";
 import { gearWideConnected } from "gd-sprest-bs/build/icons/svgs/gearWideConnected";
 import { infoCircleFill } from "gd-sprest-bs/build/icons/svgs/infoCircleFill";
 import { xCircleFill } from "gd-sprest-bs/build/icons/svgs/xCircleFill";
-import * as moment from "moment";
+import * as moment from 'moment-timezone';
 import { DataSource, IListItem } from "./ds";
 import { InstallationModal } from "./install";
 import { Security } from "./security";
@@ -82,6 +82,9 @@ export class App {
 
     // Renders the dashboard
     private render(el: HTMLElement) {
+        // Set the default timezone for moment
+        moment.tz.setDefault(Strings.TimeZone);
+
         // Create the dashboard
         let dashboard = new Dashboard({
             el,
@@ -384,8 +387,8 @@ export class App {
                                             <b>Feature:</b> ${issue.feature}<br/>
                                             <b>Group:</b> ${issue.featureGroup}<br/>
                                             <b>Status:</b> ${common.getStatusTitle(issue.status)}<br/>
-                                            <b>Start time:</b> ${moment(issue.startDateTime).format(Strings.TimeFormat)}<br/>
-                                            <b>Last updated:</b> ${moment(issue.lastModifiedDateTime).format(Strings.TimeFormat)}
+                                            <b>Start time:</b> ${moment.utc(issue.startDateTime).tz(Strings.TimeZone).format(Strings.TimeFormat)}<br/>
+                                            <b>Last updated:</b> ${moment.utc(issue.lastModifiedDateTime).tz(Strings.TimeZone).format(Strings.TimeFormat)}
                                         `;
 
                                         // Add the elements to the content

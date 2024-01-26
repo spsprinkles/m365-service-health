@@ -1,6 +1,8 @@
 var project = require("./package.json");
 var path = require("path");
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
+const currentYear = new Date().getFullYear();
 
 // Return the configuration
 module.exports = (env, argv) => {
@@ -18,9 +20,20 @@ module.exports = (env, argv) => {
             publicPath: ""
         },
 
-        // Keep only 'en' locales with Moment.js
         plugins: [
+            // Only keep 'en' locales with Moment by default
             new MomentLocalesPlugin(),
+
+            // Only keep Moment timezone data for the past year and the next 3 years matching common areas in America
+            new MomentTimezoneDataPlugin({
+                matchZones: [
+                    'America/Anchorage', 'America/Chicago', 'America/Denver', 'America/Los_Angeles',
+                    'America/New_York', 'America/Phoenix', 'America/Puerto_Rico', 'Pacific/Guam',
+                    'Pacific/Honolulu'
+                ],
+                startYear: currentYear - 1,
+                endYear: currentYear + 3
+            }),
         ],
         
         // Resolve the file names

@@ -26,7 +26,8 @@ const Strings = {
     SourceUrl: ContextInfo.webServerRelativeUrl,
     TileColumnSize: 4,
     TilePageSize: 12,
-    TimeFormat: "YYYY-MMM-DD HH:mm:ss [GMT]ZZ",
+    TimeFormat: "YYYY-MMM-DD HH:mm:ss zz",
+    TimeZone: "America/New_York",
     Version: "0.0.1"
 };
 export default Strings;

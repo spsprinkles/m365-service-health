@@ -4,6 +4,7 @@ declare interface IM365ServiceHealthWebPartStrings {
   TilePageSizeFieldLabel: string;
   TimeFormatFieldDescription: string;
   TimeFormatFieldLabel: string;
+  TimeZoneFieldLabel: string;
   TitleFieldDescription: string;
   TitleFieldLabel: string;
   AppLocalEnvironmentSharePoint: string;
