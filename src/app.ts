@@ -47,7 +47,7 @@ export class App {
                             text: Strings.Lists.Main + " list",
                             onClick: () => {
                                 // Show the FAQ list in a new tab
-                                window.open(Strings.SourceUrl + "/Lists/" + Strings.Lists.Main, "_blank");
+                                window.open(Strings.SourceUrl + "/Lists/" + Strings.Lists.Main.split(" ").join(""), "_blank");
                             }
                         },
                         {
