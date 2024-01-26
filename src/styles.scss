@@ -17,9 +17,12 @@
         -webkit-line-clamp: 2;
     }
     .card-title {
-        border-bottom: 1px solid var(--sp-neutral-quaternary);
+        border-bottom: 1px solid var(--sp-neutral-quaternary, #d2d0ce);
         padding-bottom: .25rem;
         -webkit-line-clamp: 1;
+    }
+    .issue-title {
+        vertical-align: super;
     }
     .row {
         --bs-gutter-x: 1rem;

@@ -6,10 +6,11 @@ import { filterSquare } from "gd-sprest-bs/build/icons/svgs/filterSquare";
 import { gearWideConnected } from "gd-sprest-bs/build/icons/svgs/gearWideConnected";
 import { infoCircleFill } from "gd-sprest-bs/build/icons/svgs/infoCircleFill";
 import { xCircleFill } from "gd-sprest-bs/build/icons/svgs/xCircleFill";
+import * as moment from "moment";
 import { DataSource, IListItem } from "./ds";
 import { InstallationModal } from "./install";
 import { Security } from "./security";
-import { getIcon, getStatusDescription } from "./common";
+import * as common from "./common";
 import Strings from "./strings";
 
 /**
@@ -129,7 +130,7 @@ export class App {
                     div.className = "d-flex";
                     text.className = "ms-2";
                     text.append(Strings.ProjectName);
-                    div.appendChild(getIcon(32, 32, 'ServiceHealth'));
+                    div.appendChild(common.getIcon(32, 32, 'ServiceHealth'));
                     div.appendChild(text);
                     props.brand = div;
                 },
@@ -195,11 +196,11 @@ export class App {
                         text.innerHTML = "<b>Status:</b> " + item.ServiceStatus;
                         let p = document.createElement("p");
                         p.className = "mb-0 mt-1 small";
-                        p.textContent = getStatusDescription(item.ServiceStatus);
+                        p.textContent = common.getStatusDescription(item.ServiceStatus);
                         text.appendChild(p);
-                        if (getStatusDescription(item.ServiceStatus).length > 75) {
+                        if (common.getStatusDescription(item.ServiceStatus).length > 75) {
                             Components.Tooltip({
-                                content: getStatusDescription(item.ServiceStatus),
+                                content: common.getStatusDescription(item.ServiceStatus),
                                 type: Components.TooltipTypes.LightBorder,
                                 target: p
                             });
@@ -208,65 +209,7 @@ export class App {
                 },
                 onHeaderRendered: (el, item: IListItem) => {
                     el.classList.add("text-center");
-                    let serviceId = item.ServiceId;
-                    switch (item.ServiceId) {
-                        case "cloudappsecurity":
-                            serviceId = "SecurityCenter";
-                            break;
-                        case "DynamicsCRM":
-                            serviceId = "Dynamics";
-                            break;
-                        case "Lync":
-                            serviceId = "Skype";
-                            break;
-                        case "Microsoft365Defender":
-                            serviceId = "Defender";
-                            break;
-                        case "MicrosoftFlow":
-                        case "MicrosoftFlowM365":
-                            serviceId = "PowerAutomate";
-                            break;
-                        case "microsoftteams":
-                            serviceId = "Teams";
-                            break;
-                        case "MobileDeviceManagement":
-                            serviceId = "MDM";
-                            break;
-                        case "O365Client":
-                            serviceId = "Office";
-                            break;
-                        case "officeonline":
-                            serviceId = "OfficeOnline";
-                            break;
-                        case "OneDriveForBusiness":
-                            serviceId = "OneDrive";
-                            break;
-                        case "OrgLiveID":
-                            serviceId = "Entra";
-                            break;
-                        case "OSDPPlatform":
-                            serviceId = "M365";
-                            break;
-                        case "PAM":
-                            serviceId = "KeyVault";
-                            break;
-                        case "PowerAppsM365":
-                            serviceId = "PowerApps";
-                            break;
-                        case "PowerBIcom":
-                            serviceId = "PowerBI";
-                            break;
-                        case "ProjectForTheWeb":
-                            serviceId = "Project";
-                            break;
-                        case "RMS":
-                            serviceId = "AIP";
-                            break;
-                        case "SwayEnterprise":
-                            serviceId = "Sway";
-                            break;
-                    }
-                    let icon = getIcon(32, 32, serviceId);
+                    let icon = common.getIcon(32, 32, common.getIconName(item.ServiceId));
                     icon.style.pointerEvents = "auto";
                     Components.Tooltip({
                         content: item.Title,
@@ -308,7 +251,7 @@ export class App {
                             div.classList.add("text-warning");
                             div.appendChild(exclamationTriangleFill(20, 20));
                             Components.Tooltip({
-                                content: "<b>Incident:</b> A critical service issue with noticeable user impact.",
+                                content: common.getClassificationDescription("incident"),
                                 options: { allowHTML: true, maxWidth: 500 },
                                 type: Components.TooltipTypes.LightBorder,
                                 target: div
@@ -334,7 +277,7 @@ export class App {
                             div.classList.add("text-blue");
                             div.appendChild(infoCircleFill(20, 20));
                             Components.Tooltip({
-                                content: "<b>Advisory:</b> A minor service issue with limited impact.",
+                                content: common.getClassificationDescription("advisory"),
                                 options: { allowHTML: true },
                                 type: Components.TooltipTypes.LightBorder,
                                 target: div
@@ -351,7 +294,7 @@ export class App {
                             div.classList.add("text-danger");
                             div.appendChild(xCircleFill(20, 20));
                             Components.Tooltip({
-                                content: "<b>Error:</b> A major service issue with a broad user impact.",
+                                content: common.getClassificationDescription("error"),
                                 options: { allowHTML: true },
                                 type: Components.TooltipTypes.LightBorder,
                                 target: div
@@ -379,7 +322,9 @@ export class App {
                                     Modal.clear();
                                     
                                     // Set the modal header
-                                    Modal.setHeader(item.Title + " Issues");
+                                    Modal.setHeader(common.getIcon(28, 28, common.getIconName(item.ServiceId), 'me-2'));
+                                    Modal.HeaderElement.append(item.Title + " Issues");
+                                    Modal.HeaderElement.classList.add("d-flex");
 
                                     // Hide the modal footer
                                     Modal.FooterElement.classList.add("d-none");
@@ -389,14 +334,66 @@ export class App {
                                     for(let i=0; i<issues.length; i++) {
                                         let issue = issues[i];
 
+                                        // Create the content element
+                                        let content = document.createElement("div");
+
+                                        // Set the classification icon
+                                        let classIcon = document.createElement("div");
+                                        classIcon.className = "d-inline-flex me-1 mw-fit";
+                                        if (issue.classification == "incident") {
+                                            // Render the incident icon
+                                            classIcon.classList.add("text-warning");
+                                            classIcon.appendChild(exclamationTriangleFill(20, 20));
+                                            Components.Tooltip({
+                                                content: common.getClassificationDescription(issue.classification),
+                                                options: { allowHTML: true, maxWidth: 500 },
+                                                type: Components.TooltipTypes.LightBorder,
+                                                target: classIcon
+                                            });
+                                        } else if (issue.classification == "advisory") {
+                                            // Render the advisory icon
+                                            classIcon.classList.add("text-blue");
+                                            classIcon.appendChild(infoCircleFill(20, 20));
+                                            Components.Tooltip({
+                                                content: common.getClassificationDescription(issue.classification),
+                                                options: { allowHTML: true },
+                                                type: Components.TooltipTypes.LightBorder,
+                                                target: classIcon
+                                            });
+                                        } else {
+                                            // Render the error icon
+                                            classIcon.classList.add("text-danger");
+                                            classIcon.appendChild(xCircleFill(20, 20));
+                                            Components.Tooltip({
+                                                content: common.getClassificationDescription(issue.classification),
+                                                options: { allowHTML: true },
+                                                type: Components.TooltipTypes.LightBorder,
+                                                target: classIcon
+                                            });
+                                        }
+                                        
+                                        let issueTitle = document.createElement("h6");
+                                        issueTitle.className = "d-inline-flex issue-title mb-0";
+                                        issueTitle.innerHTML = common.uppercaseFirst(issue.classification);
+                                        
+                                        let issueText = document.createElement("p");
+                                        issueText.className = "mb-0";
+                                        issueText.innerHTML = `
+                                            <b>Issue:</b> ${issue.title}<br/>
+                                            <b>Feature:</b> ${issue.feature}<br/>
+                                            <b>Group:</b> ${issue.featureGroup}<br/>
+                                            <b>Description:</b> ${issue.impactDescription}<br/>
+                                            <b>Estimated start time:</b> ${moment(issue.startDateTime).format(Strings.TimeFormat)}<br/>
+                                            <b>Last updated:</b> ${moment(issue.lastModifiedDateTime).format(Strings.TimeFormat)}
+                                        `;
+
+                                        // Add the elements to the content
+                                        content.appendChild(classIcon);
+                                        content.appendChild(issueTitle);
+                                        content.appendChild(issueText);
+
                                         // Add the issue
-                                        items.push({
-                                            content: `
-                                                <b>Title:</b> ${issue.title}<br/>
-                                                <b>Feature:</b> ${issue.feature}<br/>
-                                                <b>Description:</b> ${issue.impactDescription}
-                                            `
-                                        });
+                                        items.push({ content });
                                     }
 
                                     // Set the body
@@ -415,7 +412,7 @@ export class App {
                         div.classList.add("text-success");
                         div.appendChild(checkCircleFill(20, 20));
                         Components.Tooltip({
-                            content: "<b>Healthy:</b> No incidents or advisories.",
+                            content: common.getClassificationDescription("healthy"),
                             options: { allowHTML: true },
                             type: Components.TooltipTypes.LightBorder,
                             target: div

@@ -1,3 +1,10 @@
+const classificationDescription = new Map<string, string>([
+    ["advisory", "<b>Advisory:</b> A minor service issue with limited impact."],
+    ["error", "<b>Error:</b> A major service issue with a broad user impact."],
+    ["healthy", "<b>Healthy:</b> No incidents or advisories."],
+    ["incident", "<b>Incident:</b> A critical service issue with noticeable user impact."]
+]);
+
 const icons = new Map<string, string>([
     ["AIP", "<svg width='32' height='32' viewBox='0 0 18 18' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='aip-b' x1='8.59' x2='9.12' y1='-7.79' y2='20.05' gradientUnits='userSpaceOnUse'><stop stop-color='#32d4f5' offset='.22'/><stop stop-color='#198ab3' offset='1'/></linearGradient><linearGradient id='aip-d' x1='6.16' x2='5.73' y1='14.55' y2='12.09' gradientUnits='userSpaceOnUse'><stop stop-color='#ccc' offset='0'/><stop stop-color='#fcfcfc' offset='1'/></linearGradient><linearGradient id='aip-c' x1='11.73' x2='11.3' y1='11.87' y2='9.41' gradientUnits='userSpaceOnUse'><stop stop-color='#ccc' offset='0'/><stop stop-color='#fcfcfc' offset='1'/></linearGradient><linearGradient id='aip-a' x1='11.73' x2='11.3' y1='17.34' y2='14.88' gradientUnits='userSpaceOnUse'><stop stop-color='#ccc' offset='0'/><stop stop-color='#fcfcfc' offset='1'/></linearGradient></defs><path d='M15.06,8.67h-1V5.59a5.81,5.81,0,0,0-1.49-3.92A4.79,4.79,0,0,0,8.91,0a4.79,4.79,0,0,0-3.7,1.67A5.73,5.73,0,0,0,3.72,5.59V8.67H2.91a.7.7,0,0,0-.69.69v8a.7.7,0,0,0,.69.69H15.06a.71.71,0,0,0,.7-.69V9.36A.71.71,0,0,0,15.06,8.67Zm-3.37,0H6.13V5.54A3.18,3.18,0,0,1,7,3.39a2.51,2.51,0,0,1,1.88-.86,2.54,2.54,0,0,1,1.89.86,3.19,3.19,0,0,1,.32.43h0a3,3,0,0,1,.61,1.71Z' fill='url(#aip-b)'/><path d='M15.09,8.67H2.92a.66.66,0,0,0-.44.17l13.05,9a.67.67,0,0,0,.25-.52v-8A.71.71,0,0,0,15.09,8.67Z' fill='#50e6ff'/><path d='M2.94,8.67H15.1a.7.7,0,0,1,.45.17l-13.06,9a.7.7,0,0,1-.25-.52v-8A.72.72,0,0,1,2.94,8.67Z' fill='#fff' opacity='.2'/><polygon points='11.42 16.4 5.2 13.3 11.42 10.23 11.7 10.81 6.65 13.3 11.7 15.83' fill='#198ab3'/><circle cx='5.94' cy='13.32' r='1.25' fill='url(#aip-d)'/><circle cx='11.51' cy='10.64' r='1.25' fill='url(#aip-c)'/><circle cx='11.51' cy='16.11' r='1.25' fill='url(#aip-a)'/></svg>"],
     ["Bookings", "<svg width='32' height='32' viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'><defs><style>.bookings{fill:#008272}</style></defs><path class='bookings' d='M47.36 40.62h-30.6c-1.38 0-1.46.07-1.46 1.44v13c0 .74.29 1 1 1 5.78 0 11.57.08 17.35 0a15.35 15.35 0 0 0 15.03-13.97c.15-1.37.07-1.47-1.32-1.47zM15.55 24.9a15.32 15.32 0 0 0 13.93 12.88c1.14.06 1.19 0 1.19-1.14V9.41c0-1.26-.1-1.36-1.35-1.36Q23 8 16.7 8c-1.34 0-1.41.06-1.39 1.38V21.9a18.87 18.87 0 0 0 .24 3zM34.55 37.88h13.06c1.06 0 1.21-.14 1.08-1.15a22.34 22.34 0 0 0-.44-2.7A15.31 15.31 0 0 0 34.51 22.6c-.88-.06-1.09.1-1.09 1v13.17c.01.98.14 1.11 1.13 1.11z'/></svg>"],
@@ -42,6 +49,12 @@ const statusDescription = new Map<string, string>([
     ["Investigation Suspended", "If our detailed investigation of a potential issue results in a request for additional information from customers to allow the service team to investigate further, you'll see this status. If service team needs you to act, they'll let you know what data or logs they need."]
 ]);
 
+// Returns a description of the classification value
+export function getClassificationDescription(classification?: string) {
+    // Return the classification description
+    return (classification && classificationDescription.has(classification)) ? classificationDescription.get(classification) : classificationDescription.get('error');
+}
+
 // Returns an icon as an SVG element
 export function getIcon(height?, width?, iconName?, className?) {
     // Get the icon element
@@ -72,8 +85,76 @@ export function getIcon(height?, width?, iconName?, className?) {
     return icon;
 }
 
+// Creates a mapping from the serviceId to the proper icon name
+export function getIconName(serviceId: string) {
+    let svcId = serviceId;
+    switch (serviceId) {
+        case "cloudappsecurity":
+            svcId = "SecurityCenter";
+            break;
+        case "DynamicsCRM":
+            svcId = "Dynamics";
+            break;
+        case "Lync":
+            svcId = "Skype";
+            break;
+        case "Microsoft365Defender":
+            svcId = "Defender";
+            break;
+        case "MicrosoftFlow":
+        case "MicrosoftFlowM365":
+            svcId = "PowerAutomate";
+            break;
+        case "microsoftteams":
+            svcId = "Teams";
+            break;
+        case "MobileDeviceManagement":
+            svcId = "MDM";
+            break;
+        case "O365Client":
+            svcId = "Office";
+            break;
+        case "officeonline":
+            svcId = "OfficeOnline";
+            break;
+        case "OneDriveForBusiness":
+            svcId = "OneDrive";
+            break;
+        case "OrgLiveID":
+            svcId = "Entra";
+            break;
+        case "OSDPPlatform":
+            svcId = "M365";
+            break;
+        case "PAM":
+            svcId = "KeyVault";
+            break;
+        case "PowerAppsM365":
+            svcId = "PowerApps";
+            break;
+        case "PowerBIcom":
+            svcId = "PowerBI";
+            break;
+        case "ProjectForTheWeb":
+            svcId = "Project";
+            break;
+        case "RMS":
+            svcId = "AIP";
+            break;
+        case "SwayEnterprise":
+            svcId = "Sway";
+            break;
+    }
+    return svcId;
+}
+
 // Returns a description of the status value
 export function getStatusDescription(statusValue?) {
     // Return the status description
     return (statusValue && statusDescription.has(statusValue)) ? statusDescription.get(statusValue) : statusDescription.get('Operational');
+}
+
+// Returns a word with the first letter capitalized
+export function uppercaseFirst(word: string) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
 }
