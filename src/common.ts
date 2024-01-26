@@ -36,17 +36,31 @@ const icons = new Map<string, string>([
 ]);
 
 const statusDescription = new Map<string, string>([
-    ["Operational", "The service is healthy and no issues have been identified."],
-    ["Investigating", "A potential issue was identified and more information is being gathered about what's going on and the scope of impact."],
-    ["Restoring Service", "The cause of the issue has been identified, and action is being taken to bring the service back to a healthy state."],
-    ["Verifying Service", "The action has been taken to mitigate the issue and we have verified that the service is healthy."],
-    ["Service Restored", "The corrective action has resolved the underlying problem and the service has been restored to a healthy state. To find out what went wrong, view the issue details."],
-    ["Post-incident Report Published", "A post-incident report for a specific issue that includes root cause information has been published, with next steps to ensure a similar issue doesn't reoccur."],
-    ["Service Degradation", "An issue is confirmed that may affect use of a service or feature. You might see this status if a service is performing more slowly than usual, there are intermittent interruptions, or if a feature isn't working, for example."],
-    ["Service Interruption", "You'll see this status if an issue is determined to affect the ability for users to access the service. In this case, the issue is significant and can be reproduced consistently."],
-    ["Extended Recovery", "This status indicates that corrective action is in progress to restore the service to most users but will take some time to reach all the affected systems. You might also see this status if a temporary fix is made to reduce impact while a permanent fix is waiting to be applied."],
-    ["False Positive", "After a detailed investigation, the service is confirmed to be healthy and operating as designed. No impact to the service was observed or the cause of the incident originated outside of the service. Incidents and advisories with this status appear in the history view until they expire (after the period of time stated in the final post for that event)."],
-    ["Investigation Suspended", "If our detailed investigation of a potential issue results in a request for additional information from customers to allow the service team to investigate further, you'll see this status. If service team needs you to act, they'll let you know what data or logs they need."]
+    ["serviceOperational", "The service is healthy and no issues have been identified."],
+    ["investigating", "A potential issue was identified and more information is being gathered about what's going on and the scope of impact."],
+    ["restoringService", "The cause of the issue has been identified, and action is being taken to bring the service back to a healthy state."],
+    ["verifyingService", "The action has been taken to mitigate the issue and we have verified that the service is healthy."],
+    ["serviceRestored", "The corrective action has resolved the underlying problem and the service has been restored to a healthy state. To find out what went wrong, view the issue details."],
+    ["postIncidentReviewPublished", "A post-incident report for a specific issue that includes root cause information has been published, with next steps to ensure a similar issue doesn't reoccur."],
+    ["serviceDegradation", "An issue is confirmed that may affect use of a service or feature. You might see this status if a service is performing more slowly than usual, there are intermittent interruptions, or if a feature isn't working, for example."],
+    ["serviceInterruption", "You'll see this status if an issue is determined to affect the ability for users to access the service. In this case, the issue is significant and can be reproduced consistently."],
+    ["extendedRecovery", "This status indicates that corrective action is in progress to restore the service to most users but will take some time to reach all the affected systems. You might also see this status if a temporary fix is made to reduce impact while a permanent fix is waiting to be applied."],
+    ["falsePositive", "After a detailed investigation, the service is confirmed to be healthy and operating as designed. No impact to the service was observed or the cause of the incident originated outside of the service. Incidents and advisories with this status appear in the history view until they expire (after the period of time stated in the final post for that event)."],
+    ["investigationSuspended", "If our detailed investigation of a potential issue results in a request for additional information from customers to allow the service team to investigate further, you'll see this status. If service team needs you to act, they'll let you know what data or logs they need."]
+]);
+
+const statusTitle = new Map<string, string>([
+    ["serviceOperational", "Operational"],
+    ["investigating", "Investigating"],
+    ["restoringService", "Restoring Service"],
+    ["verifyingService", "Verifying Service"],
+    ["serviceRestored", "Service Restored"],
+    ["postIncidentReviewPublished", "Post-incident Report Published"],
+    ["serviceDegradation", "Service Degradation"],
+    ["serviceInterruption", "Service Interruption"],
+    ["extendedRecovery", "Extended Recovery"],
+    ["falsePositive", "False Positive"],
+    ["investigationSuspended", "Investigation Suspended"]
 ]);
 
 // Returns a description of the classification value
@@ -151,7 +165,13 @@ export function getIconName(serviceId: string) {
 // Returns a description of the status value
 export function getStatusDescription(statusValue?) {
     // Return the status description
-    return (statusValue && statusDescription.has(statusValue)) ? statusDescription.get(statusValue) : statusDescription.get('Operational');
+    return (statusValue && statusDescription.has(statusValue)) ? statusDescription.get(statusValue) : statusDescription.get('serviceOperational');
+}
+
+// Returns the title of the status value
+export function getStatusTitle(statusValue?) {
+    // Return the status title
+    return (statusValue && statusTitle.has(statusValue)) ? statusTitle.get(statusValue) : statusTitle.get('serviceOperational');
 }
 
 // Returns a word with the first letter capitalized

@@ -193,7 +193,7 @@ export class App {
                     let text = el.querySelector("div.card-text") as HTMLDivElement;
                     if (text) {
                         text.classList.add("mt-2");
-                        text.innerHTML = "<b>Status:</b> " + item.ServiceStatus;
+                        text.innerHTML = "<b>Status:</b> " + common.getStatusTitle(item.ServiceStatus);
                         let p = document.createElement("p");
                         p.className = "mb-0 mt-1 small";
                         p.textContent = common.getStatusDescription(item.ServiceStatus);
@@ -380,10 +380,11 @@ export class App {
                                         issueText.className = "mb-0";
                                         issueText.innerHTML = `
                                             <b>Issue:</b> ${issue.title}<br/>
+                                            <b>Details:</b> ${issue.impactDescription}<br/>
                                             <b>Feature:</b> ${issue.feature}<br/>
                                             <b>Group:</b> ${issue.featureGroup}<br/>
-                                            <b>Description:</b> ${issue.impactDescription}<br/>
-                                            <b>Estimated start time:</b> ${moment(issue.startDateTime).format(Strings.TimeFormat)}<br/>
+                                            <b>Status:</b> ${common.getStatusTitle(issue.status)}<br/>
+                                            <b>Start time:</b> ${moment(issue.startDateTime).format(Strings.TimeFormat)}<br/>
                                             <b>Last updated:</b> ${moment(issue.lastModifiedDateTime).format(Strings.TimeFormat)}
                                         `;
 
