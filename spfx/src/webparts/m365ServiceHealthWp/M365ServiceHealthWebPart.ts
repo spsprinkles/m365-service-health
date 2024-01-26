@@ -1,5 +1,5 @@
 import { DisplayMode, Environment, Version } from '@microsoft/sp-core-library';
-import { IPropertyPaneConfiguration, PropertyPaneLabel, PropertyPaneSlider } from '@microsoft/sp-property-pane';
+import { IPropertyPaneConfiguration, PropertyPaneLabel, PropertyPaneSlider, PropertyPaneTextField } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as strings from 'M365ServiceHealthWebPartStrings';
@@ -7,6 +7,8 @@ import * as strings from 'M365ServiceHealthWebPartStrings';
 export interface IM365ServiceHealthWebPartProps {
   tileColumnSize: number;
   tilePageSize: number;
+  timeFormat: string;
+  title: string;
   webUrl: string;
 }
 
@@ -21,10 +23,14 @@ declare const M365ServiceHealth: {
     envType?: number;
     tileColumnSize?: number;
     tilePageSize?: number;
+    timeFormat?: string;
+    title?: string;
     sourceUrl?: string;
   }) => void;
   tileColumnSize: number;
   tilePageSize: number;
+  timeFormat: string;
+  title: string;
   updateTheme: (currentTheme: Partial<IReadonlyTheme>) => void;
   version: string;
 };
@@ -42,6 +48,8 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
     // Set the default property values
     if (!this.properties.tileColumnSize) { this.properties.tileColumnSize = M365ServiceHealth.tileColumnSize; }
     if (!this.properties.tilePageSize) { this.properties.tilePageSize = M365ServiceHealth.tilePageSize; }
+    if (!this.properties.timeFormat) { this.properties.timeFormat = M365ServiceHealth.timeFormat; }
+    if (!this.properties.title) { this.properties.title = M365ServiceHealth.title; }
     if (!this.properties.webUrl) { this.properties.webUrl = this.context.pageContext.web.serverRelativeUrl; }
 
     // Render the application
@@ -52,6 +60,8 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
       envType: Environment.type,
       tileColumnSize: this.properties.tileColumnSize,
       tilePageSize: this.properties.tilePageSize,
+      timeFormat: this.properties.timeFormat,
+      title: this.properties.title,
       sourceUrl: this.properties.webUrl
     });
 
@@ -90,6 +100,14 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
                   max: 30,
                   min: 1,
                   showValue: true
+                }),
+                PropertyPaneTextField('title', {
+                  label: strings.TitleFieldLabel,
+                  description: strings.TitleFieldDescription
+                }),
+                PropertyPaneTextField('timeFormat', {
+                  label: strings.TimeFormatFieldLabel,
+                  description: strings.TimeFormatFieldDescription
                 }),
                 PropertyPaneLabel('version', {
                   text: "v" + M365ServiceHealth.version

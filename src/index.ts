@@ -18,6 +18,8 @@ interface IProps {
     envType?: number;
     tileColumnSize?: number;
     tilePageSize?: number;
+    timeFormat?: string;
+    title?: string;
     sourceUrl?: string;
 }
 
@@ -41,6 +43,12 @@ const GlobalVariable = {
 
         // Update the TilePageSize from SPFx value
         props.tilePageSize ? Strings.TilePageSize = props.tilePageSize : null;
+
+        // Update the TilePageSize from SPFx value
+        props.timeFormat ? Strings.TimeFormat = props.timeFormat : null;
+
+        // Update the ProjectName from SPFx title field
+        props.title ? Strings.ProjectName = props.title : null;
 
         // Initialize the application
         DataSource.init().then(
@@ -69,6 +77,8 @@ const GlobalVariable = {
     },
     tileColumnSize: Strings.TileColumnSize,
     tilePageSize: Strings.TilePageSize,
+    timeFormat: Strings.TimeFormat,
+    title: Strings.ProjectName,
     updateTheme: (themeInfo) => {
         // Set the theme
         ThemeManager.setCurrentTheme(themeInfo);
