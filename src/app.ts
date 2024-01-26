@@ -44,7 +44,7 @@ export class App {
                             }
                         },
                         {
-                            text: Strings.Lists.Main + " list",
+                            text: Strings.Lists.Main + " List",
                             onClick: () => {
                                 // Show the FAQ list in a new tab
                                 window.open(Strings.SourceUrl + "/Lists/" + Strings.Lists.Main.split(" ").join(""), "_blank");
@@ -378,7 +378,7 @@ export class App {
                                         let issueTitle = document.createElement("h6");
                                         issueTitle.className = "d-inline-flex issue-title mb-0";
                                         issueTitle.innerHTML = common.uppercaseFirst(issue.classification);
-                                        
+
                                         let issueText = document.createElement("p");
                                         issueText.className = "mb-0";
                                         issueText.innerHTML = `
