@@ -94,9 +94,9 @@ export class App {
                 items: [{
                     header: "By Status",
                     items: DataSource.StatusFilters,
-                    onFilter: (value: string) => {
-                        // Filter the table
-                        dashboard.filter(1, value);
+                    onSetFilterValue: (value, item) => {
+                        // Update the status filter value
+                        return item ? (item as Components.ICheckboxGroupItem).data : value;
                     }
                 }]
             },
@@ -191,7 +191,6 @@ export class App {
                 paginationLimit: Strings.TilePageSize,
                 showFooter: false,
                 subTitleField: "ServiceId",
-                titleField: "Title",
                 onBodyRendered: (el, item: IListItem) => {
                     let text = el.querySelector("div.card-text") as HTMLDivElement;
                     if (text) {
@@ -240,13 +239,13 @@ export class App {
                     if (issues && issues.length > 0) {
                         let advisory = 0;
                         let incident = 0;
-                        
+
                         // Identify if issues are advisory or incidents
                         for (let i = 0; i < issues.length; i++) {
                             if (issues[i].classification == "advisory") { advisory++ };
                             if (issues[i].classification == "incident") { incident++ };
                         }
-                        
+
                         let btnText = "";
                         let tooltip = "View the ";
                         if (incident > 0) {
@@ -323,7 +322,7 @@ export class App {
                                 onClick: () => {
                                     // Clear the modal
                                     Modal.clear();
-                                    
+
                                     // Set the modal header
                                     Modal.setHeader(common.getIcon(28, 28, common.getIconName(item.ServiceId), 'me-2'));
                                     Modal.HeaderElement.append(item.Title + " Issues");
@@ -334,7 +333,7 @@ export class App {
 
                                     // Parse the items
                                     let items: Components.IListGroupItem[] = [];
-                                    for(let i=0; i<issues.length; i++) {
+                                    for (let i = 0; i < issues.length; i++) {
                                         let issue = issues[i];
 
                                         // Create the content element
@@ -374,7 +373,7 @@ export class App {
                                                 target: classIcon
                                             });
                                         }
-                                        
+
                                         let issueTitle = document.createElement("h6");
                                         issueTitle.className = "d-inline-flex issue-title mb-0";
                                         issueTitle.innerHTML = common.uppercaseFirst(issue.classification);

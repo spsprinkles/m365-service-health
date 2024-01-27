@@ -1,5 +1,6 @@
 import { List } from "dattatable";
 import { Components, Types } from "gd-sprest-bs";
+import { getStatusTitle } from "./common";
 import { Security } from "./security";
 import Strings from "./strings";
 
@@ -70,7 +71,8 @@ export class DataSource {
             for (let i = 0; i < field.Choices.results.length; i++) {
                 // Add an item
                 items.push({
-                    label: field.Choices.results[i],
+                    data: field.Choices.results[i],
+                    label: getStatusTitle(field.Choices.results[i]),
                     type: Components.CheckboxGroupTypes.Switch
                 });
             }
