@@ -21,6 +21,8 @@ const Strings = {
     Lists: {
         Main: "M365 Service Health"
     },
+    MaxPageSize: 500,
+    OnlyTiles: false,
     ProjectName: "M365 Service Health",
     ProjectDescription: "A webpart showing M365 Service Health for all users.",
     SourceUrl: ContextInfo.webServerRelativeUrl,

@@ -1,10 +1,11 @@
 import { DisplayMode, Environment, Version } from '@microsoft/sp-core-library';
-import { IPropertyPaneConfiguration, PropertyPaneDropdown, PropertyPaneLabel, PropertyPaneSlider, PropertyPaneTextField } from '@microsoft/sp-property-pane';
+import { IPropertyPaneConfiguration, PropertyPaneDropdown, PropertyPaneLabel, PropertyPaneSlider, PropertyPaneTextField, PropertyPaneToggle } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as strings from 'M365ServiceHealthWebPartStrings';
 
 export interface IM365ServiceHealthWebPartProps {
+  onlyTiles: boolean;
   tileColumnSize: number;
   tilePageSize: number;
   timeFormat: string;
@@ -22,6 +23,7 @@ declare const M365ServiceHealth: {
     context?: WebPartContext;
     displayMode?: DisplayMode;
     envType?: number;
+    onlyTiles?: boolean;
     tileColumnSize?: number;
     tilePageSize?: number;
     timeFormat?: string;
@@ -29,6 +31,7 @@ declare const M365ServiceHealth: {
     title?: string;
     sourceUrl?: string;
   }) => void;
+  onlyTiles: boolean;
   tileColumnSize: number;
   tilePageSize: number;
   timeFormat: string;
@@ -49,6 +52,7 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
     }
 
     // Set the default property values
+    if (typeof(this.properties.onlyTiles) === "undefined") { this.properties.onlyTiles = M365ServiceHealth.onlyTiles; }
     if (!this.properties.tileColumnSize) { this.properties.tileColumnSize = M365ServiceHealth.tileColumnSize; }
     if (!this.properties.tilePageSize) { this.properties.tilePageSize = M365ServiceHealth.tilePageSize; }
     if (!this.properties.timeFormat) { this.properties.timeFormat = M365ServiceHealth.timeFormat; }
@@ -62,6 +66,7 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
       context: this.context,
       displayMode: this.displayMode,
       envType: Environment.type,
+      onlyTiles: this.properties.onlyTiles,
       tileColumnSize: this.properties.tileColumnSize,
       tilePageSize: this.properties.tilePageSize,
       timeFormat: this.properties.timeFormat,
@@ -105,6 +110,11 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
                   max: 30,
                   min: 1,
                   showValue: true
+                }),
+                PropertyPaneToggle('onlyTiles', {
+                  label: strings.OnlyTilesFieldLabel,
+                  offText: "Full App",
+                  onText: "Only Tiles"
                 }),
                 PropertyPaneTextField('title', {
                   label: strings.TitleFieldLabel,

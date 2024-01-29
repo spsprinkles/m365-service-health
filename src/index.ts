@@ -16,6 +16,7 @@ interface IProps {
     context?: any;
     displayMode?: number;
     envType?: number;
+    onlyTiles?: boolean;
     tileColumnSize?: number;
     tilePageSize?: number;
     timeFormat?: string;
@@ -29,6 +30,7 @@ const GlobalVariable = {
     App: null,
     Configuration,
     description: Strings.ProjectDescription,
+    onlyTiles: Strings.OnlyTiles,
     render: (props: IProps) => {
         // See if the page context exists
         if (props.context) {
@@ -39,11 +41,14 @@ const GlobalVariable = {
             Configuration.setWebUrl(props.sourceUrl || ContextInfo.webServerRelativeUrl);
         }
 
+        // Update the OnlyTiles value from SPFx settings
+        (typeof (props.onlyTiles) === "undefined") ? null : Strings.OnlyTiles = props.onlyTiles;
+
         // Update the TileColumnSize from SPFx value
         props.tileColumnSize ? Strings.TileColumnSize = props.tileColumnSize : null;
 
-        // Update the TilePageSize from SPFx value
-        props.tilePageSize ? Strings.TilePageSize = props.tilePageSize : null;
+        // Update the TilePageSize from SPFx value, set it to max value if OnlyTiles = true
+        props.tilePageSize ? (Strings.OnlyTiles ? Strings.TilePageSize = Strings.MaxPageSize : Strings.TilePageSize = props.tilePageSize) : null;
 
         // Update the TimeFormat from SPFx value
         props.timeFormat ? Strings.TimeFormat = props.timeFormat : null;

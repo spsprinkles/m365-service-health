@@ -88,7 +88,10 @@ export class App {
         // Create the dashboard
         let dashboard = new Dashboard({
             el,
+            hideFooter: !Strings.IsClassic,
             hideHeader: true,
+            hideNavigation: Strings.OnlyTiles,
+            hideSubNavigation: Strings.OnlyTiles,
             useModal: true,
             filters: {
                 items: [{
@@ -120,11 +123,7 @@ export class App {
                 },
                 itemsEnd: [{
                     className: "pe-none text-body",
-                    text: "v" + Strings.Version,
-                    onRender: (el) => {
-                        // Hide version footer in a modern page
-                        Strings.IsClassic ? null : el.classList.add("d-none");
-                    }
+                    text: "v" + Strings.Version
                 }]
             },
             navigation: {
@@ -152,7 +151,7 @@ export class App {
             },
             subNavigation: {
                 onRendering: props => {
-                    props.className = "navbar-sub rounded-bottom";
+                    Strings.OnlyTiles ? props.className = "d-none" : props.className = "navbar-sub rounded-bottom";
                 },
                 onRendered: (el) => {
                     el.querySelector("nav.navbar").classList.remove("bg-light");
@@ -199,6 +198,7 @@ export class App {
                 filterFields: ["ServiceStatus"],
                 paginationLimit: Strings.TilePageSize,
                 showFooter: false,
+                showPagination: !Strings.OnlyTiles,
                 titleFields: ["Title"],
                 subTitleFields: ["ServiceId"],
                 onBodyRendered: (el, item: IListItem) => {
