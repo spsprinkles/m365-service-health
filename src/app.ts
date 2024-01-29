@@ -94,9 +94,18 @@ export class App {
                 items: [{
                     header: "By Status",
                     items: DataSource.StatusFilters,
-                    onSetFilterValue: (value, item) => {
-                        // Update the status filter value
-                        return item ? (item as Components.ICheckboxGroupItem).data : value;
+                    multi: true,
+                    onSetFilterValue: (values: string[], items: Components.ICheckboxGroupItem[]) => {
+                        let filterValues = [];
+
+                        // Parse the items
+                        for (let i = 0; i < items?.length; i++) {
+                            // Append the value
+                            filterValues.push(items[i].data);
+                        }
+
+                        // Return the filter values
+                        return filterValues;
                     }
                 }]
             },
@@ -185,12 +194,13 @@ export class App {
             },
             tiles: {
                 items: DataSource.ListItems,
-                bodyField: "ServiceStatus",
+                bodyFields: ["ServiceStatus"],
                 colSize: Strings.TileColumnSize,
-                filterField: "ServiceStatus",
+                filterFields: ["ServiceStatus"],
                 paginationLimit: Strings.TilePageSize,
                 showFooter: false,
-                subTitleField: "ServiceId",
+                titleFields: ["Title"],
+                subTitleFields: ["ServiceId"],
                 onBodyRendered: (el, item: IListItem) => {
                     let text = el.querySelector("div.card-text") as HTMLDivElement;
                     if (text) {
