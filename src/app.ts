@@ -151,7 +151,7 @@ export class App {
             },
             subNavigation: {
                 onRendering: props => {
-                    Strings.OnlyTiles ? props.className = "d-none" : props.className = "navbar-sub rounded-bottom";
+                    props.className = "navbar-sub rounded-bottom";
                 },
                 onRendered: (el) => {
                     el.querySelector("nav.navbar").classList.remove("bg-light");
