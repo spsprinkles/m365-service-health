@@ -1,6 +1,7 @@
 define([], function() {
   return {
     "OnlyTilesFieldLabel": "View only the Tiles",
+    "ShowServicesFieldLabel": "Show only these Services",
     "TileColumnSizeFieldLabel": "Columns per row",
     "TilePageSizeFieldLabel": "Items per Page",
     "TimeFormatFieldDescription": "The DateTime format used when rendering a date.",

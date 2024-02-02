@@ -16,7 +16,9 @@ interface IProps {
     context?: any;
     displayMode?: number;
     envType?: number;
+    onLoaded?: () => void;
     onlyTiles?: boolean;
+    showServices?: string[];
     tileColumnSize?: number;
     tilePageSize?: number;
     timeFormat?: string;
@@ -30,6 +32,7 @@ const GlobalVariable = {
     App: null,
     Configuration,
     description: Strings.ProjectDescription,
+    getServices: () => { return DataSource.Services; },
     onlyTiles: Strings.OnlyTiles,
     render: (props: IProps) => {
         // See if the page context exists
@@ -43,6 +46,9 @@ const GlobalVariable = {
 
         // Update the OnlyTiles value from SPFx settings
         (typeof (props.onlyTiles) === "undefined") ? null : Strings.OnlyTiles = props.onlyTiles;
+
+        // Update the ShowServices array from SPFx value
+        (props.showServices && props.showServices.length > 0) ? Strings.ShowServices = props.showServices : null;
 
         // Update the TileColumnSize from SPFx value
         props.tileColumnSize ? Strings.TileColumnSize = props.tileColumnSize : null;
@@ -66,8 +72,10 @@ const GlobalVariable = {
                 // Wait for the theme to be loaded
                 waitForTheme().then(() => {
                     // Create the application
-                    //GlobalVariable.App = new App(props.el);
-                    new App(props.el);
+                    GlobalVariable.App = new App(props.el);
+
+                    // Call the load event
+                    props.onLoaded ? props.onLoaded() : null;
                 });
             },
 
@@ -102,10 +110,10 @@ window[Strings.GlobalVariable] = GlobalVariable;
 // Get the element and render the app if it is found
 let elApp = document.querySelector("#" + Strings.AppElementId) as HTMLElement;
 if (elApp) {
-    // Remove the extra border spacing on the webpart
+    // Remove the extra border spacing on the webpart in classic mode
     let contentBox = document.querySelector("#contentBox table.ms-core-tableNoSpace");
     contentBox ? contentBox.classList.remove("ms-webpartPage-root") : null;
-    
+
     // Render the application
     GlobalVariable.render({ el: elApp });
 }

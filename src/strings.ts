@@ -25,6 +25,7 @@ const Strings = {
     OnlyTiles: false,
     ProjectName: "M365 Service Health",
     ProjectDescription: "A webpart showing M365 Service Health for all users.",
+    ShowServices: null,
     SourceUrl: ContextInfo.webServerRelativeUrl,
     TileColumnSize: 4,
     TilePageSize: 12,

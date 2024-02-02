@@ -1,5 +1,6 @@
 declare interface IM365ServiceHealthWebPartStrings {
   OnlyTilesFieldLabel: string;
+  ShowServicesFieldLabel: string;
   TileColumnSizeFieldLabel: string;
   TilePageSizeFieldLabel: string;
   TimeFormatFieldDescription: string;

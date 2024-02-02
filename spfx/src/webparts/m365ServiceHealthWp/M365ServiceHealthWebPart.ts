@@ -1,13 +1,14 @@
 import { DisplayMode, Environment, Version } from '@microsoft/sp-core-library';
-import { IPropertyPaneConfiguration, PropertyPaneDropdown, PropertyPaneLabel, PropertyPaneSlider, PropertyPaneTextField, PropertyPaneToggle } from '@microsoft/sp-property-pane';
+import { IPropertyPaneConfiguration, IPropertyPaneDropdownOption, PropertyPaneDropdown, PropertyPaneLabel, PropertyPaneSlider, PropertyPaneTextField, PropertyPaneToggle } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
-import * as strings from 'M365ServiceHealthWebPartStrings';
 import { PropertyFieldMultiSelect } from '@pnp/spfx-property-controls/lib/PropertyFieldMultiSelect';
+import PnPTelemetry from "@pnp/telemetry-js";
+import * as strings from 'M365ServiceHealthWebPartStrings';
 
 export interface IM365ServiceHealthWebPartProps {
   onlyTiles: boolean;
-  showService: string[];
+  showServices: string[];
   tileColumnSize: number;
   tilePageSize: number;
   timeFormat: string;
@@ -16,16 +17,23 @@ export interface IM365ServiceHealthWebPartProps {
   webUrl: string;
 }
 
+// Opt out of PnP Telemetry
+const telemetry = PnPTelemetry.getInstance();
+telemetry.optOut();
+
 // Reference the solution
 import "../../../../dist/m365-service-health.min.js";
 declare const M365ServiceHealth: {
   description: string;
+  getServices: () => Map<string, string>;
   render: (props: {
     el: HTMLElement;
     context?: WebPartContext;
     displayMode?: DisplayMode;
     envType?: number;
+    onLoaded?: () => void;
     onlyTiles?: boolean;
+    showServices?: string[];
     tileColumnSize?: number;
     tilePageSize?: number;
     timeFormat?: string;
@@ -45,6 +53,7 @@ declare const M365ServiceHealth: {
 
 export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM365ServiceHealthWebPartProps> {
   private _hasRendered: boolean = false;
+  private _serviceOptions: IPropertyPaneDropdownOption[] = [];
 
   public render(): void {
     // See if have rendered the solution
@@ -69,12 +78,25 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
       displayMode: this.displayMode,
       envType: Environment.type,
       onlyTiles: this.properties.onlyTiles,
+      showServices: this.properties.showServices,
       tileColumnSize: this.properties.tileColumnSize,
       tilePageSize: this.properties.tilePageSize,
       timeFormat: this.properties.timeFormat,
       timeZone: this.properties.timeZone,
       title: this.properties.title,
-      sourceUrl: this.properties.webUrl
+      sourceUrl: this.properties.webUrl,
+      onLoaded: () => {
+        // Clear the service options
+        this._serviceOptions = [];
+
+        // Parse the services and set the options
+        M365ServiceHealth.getServices().forEach((value, key) => {
+          this._serviceOptions.push({
+            key: key,
+            text: value
+          });
+        });
+      }
     });
 
     // Set the flag
@@ -122,6 +144,12 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
                   label: strings.TitleFieldLabel,
                   description: strings.TitleFieldDescription
                 }),
+                PropertyFieldMultiSelect('showServices', {
+                  key: 'showServices',
+                  label: strings.ShowServicesFieldLabel,
+                  options: this._serviceOptions,
+                  selectedKeys: this.properties.showServices
+                }),
                 PropertyPaneTextField('timeFormat', {
                   label: strings.TimeFormatFieldLabel,
                   description: strings.TimeFormatFieldDescription
@@ -140,21 +168,6 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
                     { key: 'Pacific/Guam', text: 'Pacific/Guam' },
                     { key: 'Pacific/Honolulu', text: 'Pacific/Honolulu' }
                   ]
-                }),
-                PropertyFieldMultiSelect('showService', {
-                  key: 'showService',
-                  label: "Services",
-                  options: [
-                    {
-                      key: "Opt1",
-                      text: "Option1"
-                    },
-                    {
-                      key: "Opt2",
-                      text: "Option2"
-                    }
-                  ],
-                  selectedKeys: this.properties.showService
                 }),
                 PropertyPaneLabel('version', {
                   text: "v" + M365ServiceHealth.version

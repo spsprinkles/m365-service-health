@@ -48,6 +48,9 @@ export class DataSource {
                 },
                 onInitError: reject,
                 onInitialized: () => {
+                    // Load the services
+                    this.loadServices();
+
                     // Load the Status Filters
                     this.loadStatusFilters()
 
@@ -56,6 +59,19 @@ export class DataSource {
                 }
             });
         });
+    }
+
+    // Services
+    private static _services = new Map<string, string>();
+    static get Services(): Map<string, string> { return this._services; }
+    private static loadServices() {
+        // Clear the services
+        this._services = new Map<string, string>();
+
+        // Parse the services
+        for (let i = 0; i < DataSource.ListItems.length; i++) {
+            this._services.set(DataSource.ListItems[i].ServiceId, DataSource.ListItems[i].Title);
+        }
     }
 
     // Status Filters
