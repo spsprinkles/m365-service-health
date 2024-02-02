@@ -3,9 +3,11 @@ import { IPropertyPaneConfiguration, PropertyPaneDropdown, PropertyPaneLabel, Pr
 import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as strings from 'M365ServiceHealthWebPartStrings';
+import { PropertyFieldMultiSelect } from '@pnp/spfx-property-controls/lib/PropertyFieldMultiSelect';
 
 export interface IM365ServiceHealthWebPartProps {
   onlyTiles: boolean;
+  showService: string[];
   tileColumnSize: number;
   tilePageSize: number;
   timeFormat: string;
@@ -52,7 +54,7 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
     }
 
     // Set the default property values
-    if (typeof(this.properties.onlyTiles) === "undefined") { this.properties.onlyTiles = M365ServiceHealth.onlyTiles; }
+    if (typeof (this.properties.onlyTiles) === "undefined") { this.properties.onlyTiles = M365ServiceHealth.onlyTiles; }
     if (!this.properties.tileColumnSize) { this.properties.tileColumnSize = M365ServiceHealth.tileColumnSize; }
     if (!this.properties.tilePageSize) { this.properties.tilePageSize = M365ServiceHealth.tilePageSize; }
     if (!this.properties.timeFormat) { this.properties.timeFormat = M365ServiceHealth.timeFormat; }
@@ -138,6 +140,21 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
                     { key: 'Pacific/Guam', text: 'Pacific/Guam' },
                     { key: 'Pacific/Honolulu', text: 'Pacific/Honolulu' }
                   ]
+                }),
+                PropertyFieldMultiSelect('showService', {
+                  key: 'showService',
+                  label: "Services",
+                  options: [
+                    {
+                      key: "Opt1",
+                      text: "Option1"
+                    },
+                    {
+                      key: "Opt2",
+                      text: "Option2"
+                    }
+                  ],
+                  selectedKeys: this.properties.showService
                 }),
                 PropertyPaneLabel('version', {
                   text: "v" + M365ServiceHealth.version
