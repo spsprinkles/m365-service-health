@@ -2,12 +2,12 @@
   "@microsoft/generator-sharepoint": {
     "plusBeta": false,
     "isCreatingSolution": true,
-    "nodeVersion": "16.19.1",
+    "nodeVersion": "18.19.0",
     "sdksVersions": {
       "@microsoft/microsoft-graph-client": "3.0.2",
       "@microsoft/teams-js": "2.9.1"
     },
-    "version": "1.17.4",
+    "version": "1.18.2",
     "libraryName": "m365-service-health",
     "libraryId": "a57dae0b-0614-4f78-9c7f-e017eb4b5df8",
     "environment": "spo",
