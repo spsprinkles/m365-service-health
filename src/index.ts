@@ -48,7 +48,7 @@ const GlobalVariable = {
         (typeof (props.onlyTiles) === "undefined") ? null : Strings.OnlyTiles = props.onlyTiles;
 
         // Update the ShowServices array from SPFx value
-        (props.showServices && props.showServices.length > 0) ? Strings.ShowServices = props.showServices : null;
+        (props.showServices && props.showServices.length > 0) ? Strings.ShowServices = props.showServices : Strings.ShowServices = null;
 
         // Update the TileColumnSize from SPFx value
         props.tileColumnSize ? Strings.TileColumnSize = props.tileColumnSize : null;
