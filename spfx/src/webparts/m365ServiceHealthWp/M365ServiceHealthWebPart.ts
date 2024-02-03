@@ -17,10 +17,6 @@ export interface IM365ServiceHealthWebPartProps {
   webUrl: string;
 }
 
-// Opt out of PnP Telemetry
-const telemetry = PnPTelemetry.getInstance();
-telemetry.optOut();
-
 // Reference the solution
 import "../../../../dist/m365-service-health.min.js";
 declare const M365ServiceHealth: {
@@ -56,6 +52,10 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
   private _serviceOptions: IPropertyPaneDropdownOption[] = [];
 
   public render(): void {
+    // Opt out of PnP Telemetry
+    const telemetry = PnPTelemetry.getInstance();
+    telemetry.optOut();
+
     // See if have rendered the solution
     if (this._hasRendered) {
       // Clear the element
