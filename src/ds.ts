@@ -34,7 +34,8 @@ export class DataSource {
     // Loads the list data
     private static _list: List<IListItem> = null;
     static get List(): List<IListItem> { return this._list; }
-    static get ListItems(): IListItem[] {
+    static get ListItems(): IListItem[] { return this._list.Items; }
+    static getFilteredItems(): IListItem[] {
         // See if we are showing all services
         if (Strings.ShowServices == null) { return this.List.Items; }
 
@@ -44,7 +45,7 @@ export class DataSource {
             let item = this.List.Items[i];
 
             // Parse the services to show
-            if (Strings.ShowServices.indexOf(item.Title) >= 0) {
+            if (Strings.ShowServices.indexOf(item.ServiceId) >= 0) {
                 // Append this item
                 items.push(item);
             }
