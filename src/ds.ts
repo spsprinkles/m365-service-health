@@ -34,7 +34,25 @@ export class DataSource {
     // Loads the list data
     private static _list: List<IListItem> = null;
     static get List(): List<IListItem> { return this._list; }
-    static get ListItems(): IListItem[] { return this.List.Items; }
+    static get ListItems(): IListItem[] {
+        // See if we are showing all services
+        if (Strings.ShowServices == null) { return this.List.Items; }
+
+        // Parse the items
+        let items: IListItem[] = [];
+        for (let i = 0; i < this.List.Items.length; i++) {
+            let item = this.List.Items[i];
+
+            // Parse the services to show
+            if (Strings.ShowServices.indexOf(item.Title) >= 0) {
+                // Append this item
+                items.push(item);
+            }
+        }
+
+        // Return the items to display
+        return items;
+    }
     static load(): PromiseLike<void> {
         // Return a promise
         return new Promise((resolve, reject) => {
