@@ -1,6 +1,6 @@
 {
   "name": "m365-service-health",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A webpart showing M365 Service Health for all users.",
   "main": "src/index.ts",
   "scripts": {
