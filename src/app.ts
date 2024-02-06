@@ -89,7 +89,7 @@ export class App {
         let dashboard = new Dashboard({
             el,
             hideFooter: !Strings.IsClassic,
-            hideHeader: !Strings.TileCompact,
+            hideHeader: !Strings.OnlyTiles,
             hideNavigation: Strings.OnlyTiles,
             hideSubNavigation: Strings.OnlyTiles,
             useModal: true,
