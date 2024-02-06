@@ -89,7 +89,7 @@ export class App {
         let dashboard = new Dashboard({
             el,
             hideFooter: !Strings.IsClassic,
-            hideHeader: true,
+            hideHeader: !Strings.TileCompact,
             hideNavigation: Strings.OnlyTiles,
             hideSubNavigation: Strings.OnlyTiles,
             useModal: true,
@@ -125,6 +125,29 @@ export class App {
                     className: "pe-none text-body",
                     text: "v" + Strings.Version
                 }]
+            },
+            header: {
+                onRendered: (el) => {
+                    el.classList.remove("mx-75");
+                    let header = el.querySelector("div.header") as HTMLDivElement;
+                    header.classList.add("h5");
+                    header.classList.remove("row");
+                    header.classList.remove("py-5");
+                    header.innerHTML = "";
+
+                    // Add a logo to the navbar brand
+                    let div = document.createElement("div");
+                    let icon = common.getIcon(32, 32, 'ServiceHealth');
+                    let text = div.cloneNode() as HTMLDivElement;
+                    div.className = "d-flex";
+                    // Invert the theme colors in the icon
+                    icon.innerHTML = icon.innerHTML.replace('fill="var(--sp-primary-button-text, #ffffff)"', 'fill="var(--sp-theme-primary, #0078d4)"').replace('fill="var(--sp-theme-primary, #0078d4)" style="stroke-width:1.02321"', 'fill="var(--sp-primary-button-text, #ffffff)" style="stroke-width:1.02321"');
+                    text.className = "ms-2";
+                    text.append(Strings.ProjectName);
+                    div.appendChild(icon);
+                    div.appendChild(text);
+                    header.appendChild(div);
+                }
             },
             navigation: {
                 itemsEnd: this.generateNavItems(),
