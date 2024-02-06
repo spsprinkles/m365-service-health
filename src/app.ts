@@ -443,6 +443,8 @@ export class App {
                 },
                 onTitleRendered: (el, item: IListItem) => {
                     if (Strings.TileCompact) {
+                        el.classList.add("h6");
+                        el.classList.remove("h5");
                         let icon = common.getIcon(32, 32, common.getIconName(item.ServiceId), "me-1");
                         icon.style.pointerEvents = "auto";
                         Components.Tooltip({
