@@ -198,19 +198,20 @@ export class App {
                 filterFields: ["ServiceStatus"],
                 paginationLimit: Strings.TilePageSize,
                 showFooter: false,
+                showHeader: !Strings.TileCompact,
                 showPagination: !Strings.OnlyTiles,
                 titleFields: ["Title"],
                 subTitleFields: ["ServiceId"],
                 onBodyRendered: (el, item: IListItem) => {
                     let text = el.querySelector("div.card-text") as HTMLDivElement;
                     if (text) {
-                        text.classList.add("mt-2");
+                        Strings.TileCompact ? null : text.classList.add("mt-2");
                         text.innerHTML = "<b>Status:</b> " + common.getStatusTitle(item.ServiceStatus);
                         let p = document.createElement("p");
                         p.className = "mb-0 mt-1 small";
                         p.textContent = common.getStatusDescription(item.ServiceStatus);
-                        text.appendChild(p);
-                        if (common.getStatusDescription(item.ServiceStatus).length > 75) {
+                        Strings.TileCompact ? null : text.appendChild(p);
+                        if ((common.getStatusDescription(item.ServiceStatus).length > 75) && !Strings.TileCompact) {
                             Components.Tooltip({
                                 content: common.getStatusDescription(item.ServiceStatus),
                                 type: Components.TooltipTypes.LightBorder,
@@ -218,6 +219,9 @@ export class App {
                             });
                         }
                     }
+                },
+                onCardRendering: (item) => {
+                    Strings.TileCompact ? item.className = "compact" : null;
                 },
                 onHeaderRendered: (el, item: IListItem) => {
                     el.classList.add("text-center");
@@ -432,6 +436,18 @@ export class App {
                         });
                         el.append("Healthy");
                         el.classList.add("fw-normal");
+                    }
+                },
+                onTitleRendered: (el, item: IListItem) => {
+                    if (Strings.TileCompact) {
+                        let icon = common.getIcon(32, 32, common.getIconName(item.ServiceId), "me-1");
+                        icon.style.pointerEvents = "auto";
+                        Components.Tooltip({
+                            content: item.Title,
+                            type: Components.TooltipTypes.LightBorder,
+                            target: icon as any
+                        });
+                        el.prepend(icon);
                     }
                 }
             }

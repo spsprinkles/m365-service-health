@@ -25,6 +25,7 @@
     "properties": {
       "onlyTiles": false,
       "tileColumnSize": 4,
+      "tileCompact": false,
       "tilePageSize": 12,
       "timeFormat": "YYYY-MMM-DD HH:mm:ss zz",
       "timeZone": "America/New_York",

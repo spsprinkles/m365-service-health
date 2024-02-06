@@ -20,6 +20,7 @@ interface IProps {
     onlyTiles?: boolean;
     showServices?: string[];
     tileColumnSize?: number;
+    tileCompact?: boolean;
     tilePageSize?: number;
     timeFormat?: string;
     timeZone?: string;
@@ -52,6 +53,9 @@ const GlobalVariable = {
 
         // Update the TileColumnSize from SPFx value
         props.tileColumnSize ? Strings.TileColumnSize = props.tileColumnSize : null;
+
+        // Update the TileCompact value from SPFx settings
+        (typeof (props.tileCompact) === "undefined") ? null : Strings.TileCompact = props.tileCompact;
 
         // Update the TilePageSize from SPFx value, set it to max value if OnlyTiles = true
         props.tilePageSize ? (Strings.OnlyTiles ? Strings.TilePageSize = Strings.MaxPageSize : Strings.TilePageSize = props.tilePageSize) : null;
@@ -93,6 +97,7 @@ const GlobalVariable = {
         );
     },
     tileColumnSize: Strings.TileColumnSize,
+    tileCompact: Strings.TileCompact,
     tilePageSize: Strings.TilePageSize,
     timeFormat: Strings.TimeFormat,
     timeZone: Strings.TimeZone,

@@ -10,6 +10,7 @@ export interface IM365ServiceHealthWebPartProps {
   onlyTiles: boolean;
   showServices: string[];
   tileColumnSize: number;
+  tileCompact: boolean;
   tilePageSize: number;
   timeFormat: string;
   timeZone: string;
@@ -31,6 +32,7 @@ declare const M365ServiceHealth: {
     onlyTiles?: boolean;
     showServices?: string[];
     tileColumnSize?: number;
+    tileCompact?: boolean;
     tilePageSize?: number;
     timeFormat?: string;
     timeZone?: string;
@@ -39,6 +41,7 @@ declare const M365ServiceHealth: {
   }) => void;
   onlyTiles: boolean;
   tileColumnSize: number;
+  tileCompact: boolean;
   tilePageSize: number;
   timeFormat: string;
   timeZone: string;
@@ -65,6 +68,7 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
     // Set the default property values
     if (typeof (this.properties.onlyTiles) === "undefined") { this.properties.onlyTiles = M365ServiceHealth.onlyTiles; }
     if (!this.properties.tileColumnSize) { this.properties.tileColumnSize = M365ServiceHealth.tileColumnSize; }
+    if (typeof (this.properties.tileCompact) === "undefined") { this.properties.tileCompact = M365ServiceHealth.tileCompact; }
     if (!this.properties.tilePageSize) { this.properties.tilePageSize = M365ServiceHealth.tilePageSize; }
     if (!this.properties.timeFormat) { this.properties.timeFormat = M365ServiceHealth.timeFormat; }
     if (!this.properties.timeZone) { this.properties.timeZone = M365ServiceHealth.timeZone; }
@@ -80,6 +84,7 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
       onlyTiles: this.properties.onlyTiles,
       showServices: this.properties.showServices,
       tileColumnSize: this.properties.tileColumnSize,
+      tileCompact: this.properties.tileCompact,
       tilePageSize: this.properties.tilePageSize,
       timeFormat: this.properties.timeFormat,
       timeZone: this.properties.timeZone,
@@ -134,6 +139,11 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
                   max: 30,
                   min: 1,
                   showValue: true
+                }),
+                PropertyPaneToggle('tileCompact', {
+                  label: strings.TileCompactFieldLabel,
+                  offText: "Standard",
+                  onText: "Compact"
                 }),
                 PropertyPaneToggle('onlyTiles', {
                   label: strings.OnlyTilesFieldLabel,

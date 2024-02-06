@@ -3,6 +3,7 @@ define([], function() {
     "OnlyTilesFieldLabel": "View only the Tiles",
     "ShowServicesFieldLabel": "Show only these Services",
     "TileColumnSizeFieldLabel": "Columns per row",
+    "TileCompactFieldLabel": "Render the Tiles compact",
     "TilePageSizeFieldLabel": "Items per Page",
     "TimeFormatFieldDescription": "The DateTime format used when rendering a date.",
     "TimeFormatFieldLabel": "Date & time format",

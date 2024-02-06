@@ -10,6 +10,9 @@
         margin-top: 1rem;
         min-height: 12.5rem;
     }
+    .card-subtitle {
+        min-height: 26px;
+    }
     .card-text p.small, .card-title {
         display: -webkit-box;
         overflow: hidden;
@@ -29,6 +32,15 @@
     }
     .text-blue {
         color: var(--sp-blue, #0078d4) !important;
+    }
+    .card.compact {
+        --bs-card-spacer-x: .5rem;
+        --bs-card-spacer-y: .25rem;
+        --bs-card-title-spacer-y: .25rem;
+        min-height: unset;
+        .card-title {
+            padding-bottom: .1rem;
+        }
     }
 }
 

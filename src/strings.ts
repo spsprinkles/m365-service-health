@@ -28,6 +28,7 @@ const Strings = {
     ShowServices: null,
     SourceUrl: ContextInfo.webServerRelativeUrl,
     TileColumnSize: 4,
+    TileCompact: false,
     TilePageSize: 12,
     TimeFormat: "YYYY-MMM-DD HH:mm:ss zz",
     TimeZone: "America/New_York",
