@@ -434,8 +434,11 @@ export class App {
                             type: Components.TooltipTypes.LightBorder,
                             target: div
                         });
-                        el.append("Healthy");
-                        el.classList.add("fw-normal");
+                        // Render a div for the Healthy text
+                        let txt = document.createElement("div");
+                        txt.className = "btn p-0 pe-none";
+                        txt.innerHTML = "Healthy";
+                        el.appendChild(txt);
                     }
                 },
                 onTitleRendered: (el, item: IListItem) => {
