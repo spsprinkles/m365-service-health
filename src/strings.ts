@@ -27,9 +27,9 @@ const Strings = {
     ProjectDescription: "A webpart showing M365 Service Health for all users.",
     ShowServices: null,
     SourceUrl: ContextInfo.webServerRelativeUrl,
-    TileColumnSize: 4,
+    TileColumnSize: 3,
     TileCompact: false,
-    TilePageSize: 12,
+    TilePageSize: 9,
     TimeFormat: "YYYY-MMM-DD HH:mm:ss zz",
     TimeZone: "America/New_York",
     Version: "0.0.3"
