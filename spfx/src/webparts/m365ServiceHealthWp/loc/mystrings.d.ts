@@ -1,4 +1,8 @@
 declare interface IM365ServiceHealthWebPartStrings {
+  MoreInfoFieldDescription: string;
+  MoreInfoFieldLabel: string;
+  MoreInfoTooltipFieldDescription: string;
+  MoreInfoTooltipFieldLabel: string;
   OnlyTilesFieldLabel: string;
   ShowServicesFieldLabel: string;
   TileColumnSizeFieldLabel: string;

@@ -16,6 +16,8 @@ interface IProps {
     context?: any;
     displayMode?: number;
     envType?: number;
+    moreInfo?: string;
+    moreInfoTooltip?: string;
     onLoaded?: () => void;
     onlyTiles?: boolean;
     showServices?: string[];
@@ -34,6 +36,7 @@ const GlobalVariable = {
     Configuration,
     description: Strings.ProjectDescription,
     getServices: () => { return DataSource.Services; },
+    moreInfoTooltip: Strings.MoreInfoTooltip,
     onlyTiles: Strings.OnlyTiles,
     render: (props: IProps) => {
         // See if the page context exists
@@ -44,6 +47,12 @@ const GlobalVariable = {
             // Update the configuration
             Configuration.setWebUrl(props.sourceUrl || ContextInfo.webServerRelativeUrl);
         }
+
+        // Update the MoreInfo from SPFx title field
+        props.moreInfo ? Strings.MoreInfo = props.moreInfo : Strings.MoreInfo = null;
+
+        // Update the MoreInfo from SPFx title field
+        props.moreInfoTooltip ? Strings.MoreInfoTooltip = props.moreInfoTooltip : null;
 
         // Update the OnlyTiles value from SPFx settings
         (typeof (props.onlyTiles) === "undefined") ? null : Strings.OnlyTiles = props.onlyTiles;

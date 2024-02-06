@@ -1,11 +1,15 @@
 define([], function() {
   return {
+    "MoreInfoFieldDescription": "A link (URL) to another page for more information",
+    "MoreInfoFieldLabel": "More Info URL",
+    "MoreInfoTooltipFieldDescription": "The tooltip text for the More Info URL",
+    "MoreInfoTooltipFieldLabel": "More Info tooltip",
     "OnlyTilesFieldLabel": "View only the Tiles",
     "ShowServicesFieldLabel": "Show only these Services",
     "TileColumnSizeFieldLabel": "Columns per row",
     "TileCompactFieldLabel": "Render the Tiles compact",
     "TilePageSizeFieldLabel": "Items per Page",
-    "TimeFormatFieldDescription": "The DateTime format used when rendering a date.",
+    "TimeFormatFieldDescription": "The DateTime format used when rendering a date",
     "TimeFormatFieldLabel": "Date & time format",
     "TimeZoneFieldLabel": "Time zone format",
     "TitleFieldDescription": "The text shown in the top-left of the webpart",

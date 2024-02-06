@@ -130,7 +130,6 @@ export class App {
                 onRendered: (el) => {
                     el.classList.remove("mx-75");
                     let header = el.querySelector("div.header") as HTMLDivElement;
-                    header.classList.add("h5");
                     header.classList.remove("row");
                     header.classList.remove("py-5");
                     header.innerHTML = "";
@@ -142,8 +141,22 @@ export class App {
                     div.className = "d-flex";
                     // Invert the theme colors in the icon
                     icon.innerHTML = icon.innerHTML.replace('fill="var(--sp-primary-button-text, #ffffff)"', 'fill="var(--sp-theme-primary, #0078d4)"').replace('fill="var(--sp-theme-primary, #0078d4)" style="stroke-width:1.02321"', 'fill="var(--sp-primary-button-text, #ffffff)" style="stroke-width:1.02321"');
-                    text.className = "ms-2";
-                    text.append(Strings.ProjectName);
+                    text.className = "h5 ms-2";
+                    if (Strings.MoreInfo && common.isValidUrl(Strings.MoreInfo)) {
+                        // Render a tooltip to show more info
+                        let ttp = Components.Tooltip({
+                            el: text,
+                            content: Strings.MoreInfoTooltip ? Strings.MoreInfoTooltip : "View more information",
+                            btnProps: {
+                                href: Strings.MoreInfo,
+                                text: Strings.ProjectName,
+                                type: Components.ButtonTypes.Link,
+                            }
+                        });
+                        ttp.el.classList.remove("btn");
+                    } else {
+                        text.append(Strings.ProjectName);
+                    }
                     div.appendChild(icon);
                     div.appendChild(text);
                     header.appendChild(div);
@@ -169,7 +182,18 @@ export class App {
                     props.brand = div;
                 },
                 onRendered: (el) => {
-                    el.querySelector("a.navbar-brand").classList.add("pe-none");
+                    let brand = el.querySelector("a.navbar-brand") as HTMLAnchorElement;
+                    if (Strings.MoreInfo && common.isValidUrl(Strings.MoreInfo)) {
+                        brand.href = Strings.MoreInfo;
+                        // Render a tooltip to show more info
+                        Components.Tooltip({
+                            content: Strings.MoreInfoTooltip ? Strings.MoreInfoTooltip : "View more information",
+                            type: Components.TooltipTypes.LightBorder,
+                            target: brand
+                        });
+                    } else {
+                        brand.classList.add("pe-none");
+                    }
                 }
             },
             subNavigation: {

@@ -7,6 +7,8 @@ import PnPTelemetry from "@pnp/telemetry-js";
 import * as strings from 'M365ServiceHealthWebPartStrings';
 
 export interface IM365ServiceHealthWebPartProps {
+  moreInfo: string;
+  moreInfoTooltip: string;
   onlyTiles: boolean;
   showServices: string[];
   tileColumnSize: number;
@@ -28,6 +30,8 @@ declare const M365ServiceHealth: {
     context?: WebPartContext;
     displayMode?: DisplayMode;
     envType?: number;
+    moreInfo?: string;
+    moreInfoTooltip?: string;
     onLoaded?: () => void;
     onlyTiles?: boolean;
     showServices?: string[];
@@ -39,6 +43,7 @@ declare const M365ServiceHealth: {
     title?: string;
     sourceUrl?: string;
   }) => void;
+  moreInfoTooltip: string;
   onlyTiles: boolean;
   tileColumnSize: number;
   tileCompact: boolean;
@@ -66,6 +71,7 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
     }
 
     // Set the default property values
+    if (!this.properties.moreInfoTooltip) { this.properties.moreInfoTooltip = M365ServiceHealth.moreInfoTooltip; }
     if (typeof (this.properties.onlyTiles) === "undefined") { this.properties.onlyTiles = M365ServiceHealth.onlyTiles; }
     if (!this.properties.tileColumnSize) { this.properties.tileColumnSize = M365ServiceHealth.tileColumnSize; }
     if (typeof (this.properties.tileCompact) === "undefined") { this.properties.tileCompact = M365ServiceHealth.tileCompact; }
@@ -81,6 +87,8 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
       context: this.context,
       displayMode: this.displayMode,
       envType: Environment.type,
+      moreInfo: this.properties.moreInfo,
+      moreInfoTooltip: this.properties.moreInfoTooltip,
       onlyTiles: this.properties.onlyTiles,
       showServices: this.properties.showServices,
       tileColumnSize: this.properties.tileColumnSize,
@@ -121,6 +129,8 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
     return Version.parse(M365ServiceHealth.version);
   }
 
+  protected get disableReactivePropertyChanges(): boolean { return true; }
+
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [
@@ -153,6 +163,14 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
                 PropertyPaneTextField('title', {
                   label: strings.TitleFieldLabel,
                   description: strings.TitleFieldDescription
+                }),
+                PropertyPaneTextField('moreInfo', {
+                  label: strings.MoreInfoFieldLabel,
+                  description: strings.MoreInfoFieldDescription
+                }),
+                PropertyPaneTextField('moreInfoTooltip', {
+                  label: strings.MoreInfoTooltipFieldLabel,
+                  description: strings.MoreInfoTooltipFieldDescription
                 }),
                 PropertyFieldMultiSelect('showServices', {
                   key: 'showServices',

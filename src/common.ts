@@ -180,6 +180,17 @@ export function getStatusTitle(statusValue?) {
     return (statusValue && statusTitle.has(statusValue)) ? statusTitle.get(statusValue) : statusTitle.get('serviceOperational');
 }
 
+// Returns a boolean indicating if the urlString is valid
+export function isValidUrl(urlString) {
+    var urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // validate domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // validate port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?'+ // validate query string
+        '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
+    return !!urlPattern.test(urlString);
+}
+
 // Returns a word with the first letter capitalized
 export function uppercaseFirst(word: string) {
     return word.charAt(0).toUpperCase() + word.slice(1);

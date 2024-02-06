@@ -22,6 +22,8 @@ const Strings = {
         Main: "M365 Service Health"
     },
     MaxPageSize: 500,
+    MoreInfo: null,
+    MoreInfoTooltip: "View more information",
     OnlyTiles: false,
     ProjectName: "M365 Service Health",
     ProjectDescription: "A webpart showing M365 Service Health for all users.",
