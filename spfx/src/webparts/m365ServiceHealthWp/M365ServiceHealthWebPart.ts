@@ -9,7 +9,7 @@ export interface IM365ServiceHealthWebPartProps {
   moreInfo: string;
   moreInfoTooltip: string;
   onlyTiles: boolean;
-  showServices: string[];
+  showServices: string;
   tileColumnSize: number;
   tileCompact: boolean;
   tilePageSize: number;
@@ -33,7 +33,7 @@ declare const M365ServiceHealth: {
     moreInfoTooltip?: string;
     onLoaded?: () => void;
     onlyTiles?: boolean;
-    showServices?: string[];
+    showServices?: string[] | undefined;
     tileColumnSize?: number;
     tileCompact?: boolean;
     tilePageSize?: number;
@@ -86,7 +86,7 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
       moreInfo: this.properties.moreInfo,
       moreInfoTooltip: this.properties.moreInfoTooltip,
       onlyTiles: this.properties.onlyTiles,
-      showServices: this.properties.showServices,
+      showServices: this.getServices(true),
       tileColumnSize: this.properties.tileColumnSize,
       tileCompact: this.properties.tileCompact,
       tilePageSize: this.properties.tilePageSize,
@@ -105,19 +105,53 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
           })
         });
 
-        // See if the dropdown was already rendered
-        if (this._ddlServices) {
-          // Update the dropdown properties
-          this._ddlServices.setItems(this._serviceItems);
-
-          // Set the default values
-          this._ddlServices.setValue(this.properties.showServices);
-        }
+        // Set the services
+        this.setServices();
       }
     });
 
     // Set the flag
     this._hasRendered = true;
+  }
+
+  // Gets the services to display
+  getServices(valuesOnly: boolean = false): string[] | undefined {
+    try {
+      // Convert the value to an array of dropdown items
+      const items = JSON.parse(this.properties.showServices);
+
+      // See if we are returning the values only
+      if (valuesOnly) {
+        // Parse the items and create an array of the values
+        const values: string[] = [];
+        for (let i = 0; i < items.length; i++) {
+          values.push(items[i].value);
+        }
+
+        // Return the values only
+        return values;
+      }
+
+      // Return items
+      return items;
+    }
+    catch { return undefined; }
+  }
+
+  // Sets the services dropdown items and default value
+  private setServices(): void {
+    // See if the dropdown was already rendered
+    if (this._ddlServices) {
+      // Update the dropdown properties
+      this._ddlServices.setItems(this._serviceItems);
+
+      // See if a value exists
+      const currentValue = this.getServices();
+      if (currentValue) {
+        // Set the selected values
+        this._ddlServices.setValue(currentValue);
+      }
+    }
   }
 
   protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {
@@ -172,6 +206,7 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
                   label: strings.ShowServicesFieldLabel,
                   description: "This is a custom control that doesn't affect this app.",
                   placeholder: "Select Services",
+                  properties: this.properties,
                   tooltip: "This is my tooltip",
                   items: this._serviceItems,
                   onRendered: (ddl, props) => {
@@ -183,8 +218,8 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
                       // Set the items
                       this._ddlServices.setItems(this._serviceItems);
 
-                      // Set the default values
-                      this._ddlServices.setValue(this.properties.showServices);
+                      // Set the selected values
+                      this.setServices();
                     }
                   }
                 }),
