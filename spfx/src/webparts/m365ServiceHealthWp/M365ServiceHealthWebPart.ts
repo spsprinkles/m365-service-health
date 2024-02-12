@@ -20,7 +20,7 @@ export interface IM365ServiceHealthWebPartProps {
 }
 
 // Reference the solution
-import "../../../../dist/m365-service-health.js";
+import "../../../../dist/m365-service-health.min.js";
 declare const M365ServiceHealth: {
   description: string;
   getServices: () => Map<string, string>;
@@ -33,7 +33,7 @@ declare const M365ServiceHealth: {
     moreInfoTooltip?: string;
     onLoaded?: () => void;
     onlyTiles?: boolean;
-    showServices?: string[] | undefined;
+    showServices?: string[];
     tileColumnSize?: number;
     tileCompact?: boolean;
     tilePageSize?: number;
@@ -201,47 +201,6 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
                 PropertyPaneTextField('title', {
                   label: strings.TitleFieldLabel,
                   description: strings.TitleFieldDescription
-                }),
-                PropertyPane.MultiDropdown("showServices1", {
-                  label: strings.ShowServicesFieldLabel,
-                  description: "This is a custom control that doesn't affect this app.",
-                  properties: this.properties,
-                  tooltip: "This is my tooltip",
-                  items: this._serviceItems,
-                  onRendered: (ddl, props) => {
-                    // Set the component
-                    this._ddlServices = ddl as Components.IDropdown;
-
-                    // See if no items were set, but they exist now
-                    if (props?.items === null && this._serviceItems) {
-                      // Set the items
-                      this._ddlServices.setItems(this._serviceItems);
-
-                      // Set the selected values
-                      this.setServices();
-                    }
-                  }
-                }),
-                PropertyPane.MultiDropdownButton("showServices2", {
-                  label: strings.ShowServicesFieldLabel,
-                  description: "This is a custom control that doesn't affect this app.",
-                  placeholder: "Select Services",
-                  properties: this.properties,
-                  tooltip: "This is my tooltip",
-                  items: this._serviceItems,
-                  onRendered: (ddl, props) => {
-                    // Set the component
-                    this._ddlServices = ddl as Components.IDropdown;
-
-                    // See if no items were set, but they exist now
-                    if (props?.items === null && this._serviceItems) {
-                      // Set the items
-                      this._ddlServices.setItems(this._serviceItems);
-
-                      // Set the selected values
-                      this.setServices();
-                    }
-                  }
                 }),
                 PropertyPane.MultiDropdownCheckbox("showServices", {
                   label: strings.ShowServicesFieldLabel,
