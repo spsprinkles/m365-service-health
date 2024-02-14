@@ -34,6 +34,6 @@ const Strings = {
     TilePageSize: 9,
     TimeFormat: "YYYY-MMM-DD HH:mm:ss zz",
     TimeZone: "America/New_York",
-    Version: "0.0.5"
+    Version: "0.0.6"
 };
 export default Strings;
