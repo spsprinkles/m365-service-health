@@ -180,6 +180,13 @@ export function getStatusTitle(statusValue?) {
     return (statusValue && statusTitle.has(statusValue)) ? statusTitle.get(statusValue) : statusTitle.get('serviceOperational');
 }
 
+// Returns the ServiceHealth icon with the colors inverted
+export function invertIconColor(icon: SVGImageElement): SVGImageElement {
+    // Invert the theme colors in the icon
+    icon.innerHTML = icon.innerHTML.replace('fill="var(--sp-primary-button-text, #ffffff)"', 'fill="var(--sp-theme-primary, #0078d4)"').replace('fill="var(--sp-theme-primary, #0078d4)" style="stroke-width:1.02321"', 'fill="var(--sp-primary-button-text, #ffffff)" style="stroke-width:1.02321"');
+    return icon;
+}
+
 // Returns a boolean indicating if the urlString is valid
 export function isValidUrl(urlString) {
     var urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol

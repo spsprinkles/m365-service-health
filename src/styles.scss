@@ -39,8 +39,11 @@
         --bs-card-title-spacer-y: .25rem;
         margin-top: .5rem;
         min-height: unset;
-        .card-title {
-            padding-bottom: .1rem;
+        .card-body {
+            background-color: color-mix(in srgb, var(--sp-black, #000000), transparent 95%);
+            .card-title {
+                padding-bottom: .1rem;
+            }
         }
     }
 }
@@ -64,12 +67,4 @@ nav.navbar-sub {
     border: 2px solid var(--sp-neutral-quaternary);
     border-top: 0;
     border-radius: 0 0 .25rem .25rem;
-}
-
-/* Apply changes to the Settings Panel */
-div.spPropertyPaneContainer div[aria-label='M365 Service Health property pane'] div[data-automation-id='propertyPaneGroupContent'] {
-    /* Align version to the right */
-    >div:last-child label {
-        text-align: right;
-    }
 }

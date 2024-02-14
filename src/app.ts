@@ -136,11 +136,9 @@ export class App {
 
                     // Add a logo to the navbar brand
                     let div = document.createElement("div");
-                    let icon = common.getIcon(32, 32, 'ServiceHealth');
+                    let icon = common.invertIconColor(common.getIcon(32, 32, 'ServiceHealth'));
                     let text = div.cloneNode() as HTMLDivElement;
                     div.className = "d-flex";
-                    // Invert the theme colors in the icon
-                    icon.innerHTML = icon.innerHTML.replace('fill="var(--sp-primary-button-text, #ffffff)"', 'fill="var(--sp-theme-primary, #0078d4)"').replace('fill="var(--sp-theme-primary, #0078d4)" style="stroke-width:1.02321"', 'fill="var(--sp-primary-button-text, #ffffff)" style="stroke-width:1.02321"');
                     text.className = "h5 ms-2";
                     if (Strings.MoreInfo && common.isValidUrl(Strings.MoreInfo)) {
                         // Render a tooltip to show more info
