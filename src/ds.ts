@@ -60,6 +60,7 @@ export class DataSource {
             // Initialize the list
             this._list = new List<IListItem>({
                 listName: Strings.Lists.Main,
+                webUrl: Strings.SourceUrl,
                 itemQuery: {
                     GetAllItems: true,
                     OrderBy: ["Title"],

@@ -26,7 +26,7 @@ const Strings = {
     MoreInfoTooltip: "View more information",
     OnlyTiles: false,
     ProjectName: "M365 Service Health",
-    ProjectDescription: "A webpart showing M365 Service Health for all users.",
+    ProjectDescription: "The M365 Service Health app is a solution that reads service health data from a SharePoint list and presents it to all users with an intuitive interface.",
     ShowServices: null,
     SourceUrl: ContextInfo.webServerRelativeUrl,
     TileColumnSize: 3,
@@ -34,6 +34,6 @@ const Strings = {
     TilePageSize: 9,
     TimeFormat: "YYYY-MMM-DD HH:mm:ss zz",
     TimeZone: "America/New_York",
-    Version: "0.0.5"
+    Version: "0.0.6"
 };
 export default Strings;

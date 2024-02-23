@@ -1,7 +1,7 @@
 {
   "name": "m365-service-health",
-  "version": "0.0.5",
-  "description": "A webpart showing M365 Service Health for all users.",
+  "version": "0.0.6",
+  "description": "The M365 Service Health app is a solution that reads service health data from a SharePoint list and presents it to all users with an intuitive interface.",
   "main": "src/index.ts",
   "scripts": {
     "all": "npm run clean && npm run build && npm run prod && npm run spfx",

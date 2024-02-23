@@ -2,6 +2,7 @@ import { waitForTheme } from "dattatable";
 import { ContextInfo, ThemeManager } from "gd-sprest-bs";
 import { App } from "./app";
 import { Configuration } from "./cfg";
+import { getIcon, invertIconColor } from "./common";
 import { DataSource } from "./ds";
 import { InstallationModal } from "./install";
 import { Security } from "./security";
@@ -16,6 +17,7 @@ interface IProps {
     context?: any;
     displayMode?: number;
     envType?: number;
+    listName?: string;
     moreInfo?: string;
     moreInfoTooltip?: string;
     onLoaded?: () => void;
@@ -35,7 +37,9 @@ const GlobalVariable = {
     App: null,
     Configuration,
     description: Strings.ProjectDescription,
+    getLogo: () => { return invertIconColor(getIcon(28, 28, 'ServiceHealth', 'logo me-2')); },
     getServices: () => { return DataSource.Services; },
+    listName: Strings.Lists.Main,
     moreInfoTooltip: Strings.MoreInfoTooltip,
     onlyTiles: Strings.OnlyTiles,
     render: (props: IProps) => {
@@ -46,6 +50,13 @@ const GlobalVariable = {
 
             // Update the configuration
             Configuration.setWebUrl(props.sourceUrl || ContextInfo.webServerRelativeUrl);
+
+            // See if the list name is set
+            if (props.listName) {
+                // Update the configuration
+                Strings.Lists.Main = props.listName;
+                Configuration._configuration.ListCfg[0].ListInformation.Title = props.listName;
+            }
         }
 
         // Update the MoreInfo from SPFx title field
@@ -114,8 +125,7 @@ const GlobalVariable = {
     updateTheme: (themeInfo) => {
         // Set the theme
         ThemeManager.setCurrentTheme(themeInfo);
-    },
-    version: Strings.Version
+    }
 };
 
 // Make is available in the DOM

@@ -1,4 +1,6 @@
 declare interface IM365ServiceHealthWebPartStrings {
+  ListNameFieldDescription: string;
+  ListNameFieldLabel: string;
   MoreInfoFieldDescription: string;
   MoreInfoFieldLabel: string;
   MoreInfoTooltipFieldDescription: string;
@@ -13,6 +15,8 @@ declare interface IM365ServiceHealthWebPartStrings {
   TimeZoneFieldLabel: string;
   TitleFieldDescription: string;
   TitleFieldLabel: string;
+  WebUrlFieldDescription: string;
+  WebUrlFieldLabel: string;
   AppLocalEnvironmentSharePoint: string;
   AppLocalEnvironmentTeams: string;
   AppLocalEnvironmentOffice: string;

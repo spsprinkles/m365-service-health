@@ -1,11 +1,15 @@
 import { DisplayMode, Environment, Version } from '@microsoft/sp-core-library';
-import { IPropertyPaneConfiguration, PropertyPaneDropdown, PropertyPaneLabel, PropertyPaneSlider, PropertyPaneTextField, PropertyPaneToggle } from '@microsoft/sp-property-pane';
+import {
+  IPropertyPaneConfiguration, PropertyPaneDropdown, PropertyPaneHorizontalRule, PropertyPaneLabel,
+  PropertyPaneLink, PropertyPaneSlider, PropertyPaneTextField, PropertyPaneToggle
+} from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as strings from 'M365ServiceHealthWebPartStrings';
 import { Components, PropertyPane } from "gd-sprest-bs";
 
 export interface IM365ServiceHealthWebPartProps {
+  listName: string;
   moreInfo: string;
   moreInfoTooltip: string;
   onlyTiles: boolean;
@@ -23,12 +27,15 @@ export interface IM365ServiceHealthWebPartProps {
 import "../../../../dist/m365-service-health.min.js";
 declare const M365ServiceHealth: {
   description: string;
+  getLogo: () => SVGImageElement;
   getServices: () => Map<string, string>;
+  listName: string;
   render: (props: {
     el: HTMLElement;
     context?: WebPartContext;
     displayMode?: DisplayMode;
     envType?: number;
+    listName?: string;
     moreInfo?: string;
     moreInfoTooltip?: string;
     onLoaded?: () => void;
@@ -51,7 +58,6 @@ declare const M365ServiceHealth: {
   timeZone: string;
   title: string;
   updateTheme: (currentTheme: Partial<IReadonlyTheme>) => void;
-  version: string;
 };
 
 export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM365ServiceHealthWebPartProps> {
@@ -67,6 +73,7 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
     }
 
     // Set the default property values
+    if (!this.properties.listName) { this.properties.listName = M365ServiceHealth.listName; }
     if (!this.properties.moreInfoTooltip) { this.properties.moreInfoTooltip = M365ServiceHealth.moreInfoTooltip; }
     if (typeof (this.properties.onlyTiles) === "undefined") { this.properties.onlyTiles = M365ServiceHealth.onlyTiles; }
     if (!this.properties.tileColumnSize) { this.properties.tileColumnSize = M365ServiceHealth.tileColumnSize; }
@@ -83,6 +90,7 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
       context: this.context,
       displayMode: this.displayMode,
       envType: Environment.type,
+      listName: this.properties.listName,
       moreInfo: this.properties.moreInfo,
       moreInfoTooltip: this.properties.moreInfoTooltip,
       onlyTiles: this.properties.onlyTiles,
@@ -154,6 +162,20 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
     }
   }
 
+  // Add the logo to the PropertyPane Settings panel
+  protected onPropertyPaneRendered(): void {
+    const setLogo = setInterval(() => {
+      let closeBtn = document.querySelectorAll("div.spPropertyPaneContainer div[aria-label='M365 Service Health property pane'] button[data-automation-id='propertyPaneClose']");
+      if (closeBtn) {
+        closeBtn.forEach((el: HTMLElement) => {
+          let parent = el.parentElement;
+          if (parent && !(parent.firstChild as HTMLElement).classList.contains("logo")) { parent.prepend(M365ServiceHealth.getLogo()) }
+        });
+        clearInterval(setLogo);
+      }
+    }, 50);
+  }
+  
   protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {
     if (!currentTheme) {
       return;
@@ -164,7 +186,26 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
   }
 
   protected get dataVersion(): Version {
-    return Version.parse(M365ServiceHealth.version);
+    return Version.parse(this.context.manifest.version);
+  }
+
+  // Checks if is in debug mode from the query string
+  private debug(): boolean {
+    // Get the parameters from the query string
+    let qs = document.location.search.split('?');
+    qs = qs.length > 1 ? qs[1].split('&') : [];
+    for (let i = 0; i < qs.length; i++) {
+      let qsItem = qs[i].split('=');
+      let key = qsItem[0];
+      let value = qsItem[1];
+
+      // See if this is the 'debug' key
+      if (key === "debug") {
+        // Return the item
+        return value === "true";
+      }
+    }
+    return false;
   }
 
   protected get disableReactivePropertyChanges(): boolean { return true; }
@@ -175,7 +216,18 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
         {
           groups: [
             {
+              groupName: "Basic Settings:",
               groupFields: [
+                PropertyPaneToggle('tileCompact', {
+                  label: strings.TileCompactFieldLabel,
+                  offText: "Standard",
+                  onText: "Compact"
+                }),
+                PropertyPaneToggle('onlyTiles', {
+                  label: strings.OnlyTilesFieldLabel,
+                  offText: "Full App",
+                  onText: "Only Tiles"
+                }),
                 PropertyPaneSlider('tileColumnSize', {
                   label: strings.TileColumnSizeFieldLabel,
                   max: 6,
@@ -187,16 +239,6 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
                   max: 30,
                   min: 1,
                   showValue: true
-                }),
-                PropertyPaneToggle('tileCompact', {
-                  label: strings.TileCompactFieldLabel,
-                  offText: "Standard",
-                  onText: "Compact"
-                }),
-                PropertyPaneToggle('onlyTiles', {
-                  label: strings.OnlyTilesFieldLabel,
-                  offText: "Full App",
-                  onText: "Only Tiles"
                 }),
                 PropertyPaneTextField('title', {
                   label: strings.TitleFieldLabel,
@@ -242,15 +284,51 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
                     { key: 'Pacific/Honolulu', text: 'Pacific/Honolulu' }
                   ]
                 }),
-                PropertyPaneLabel('version', {
-                  text: "v" + M365ServiceHealth.version
+                PropertyPaneTextField('listName', {
+                  label: strings.ListNameFieldLabel,
+                  description: strings.ListNameFieldDescription,
+                  disabled: !this.debug()
+                }),
+                PropertyPaneTextField('webUrl', {
+                  label: strings.WebUrlFieldLabel,
+                  description: strings.WebUrlFieldDescription,
+                  disabled: !this.debug()
                 })
               ]
             }
-          ],
-          header: {
-            description: M365ServiceHealth.description
-          }
+          ]
+        },
+        {
+          groups: [
+            {
+              groupName: "About this app:",
+              groupFields: [
+                PropertyPaneLabel('version', {
+                  text: "Version: " + this.context.manifest.version
+                }),
+                PropertyPaneLabel('description', {
+                  text: M365ServiceHealth.description
+                }),
+                PropertyPaneLabel('about', {
+                  text: "We think adding sprinkles to a donut just makes it better! SharePoint Sprinkles builds apps that are sprinkled on top of SharePoint, making your experience even better. Check out our site below to discover other SharePoint Sprinkles apps, or connect with us on GitHub."
+                }),
+                PropertyPaneLabel('support', {
+                  text: "Are you having a problem or do you have a great idea for this app? Visit our GitHub link below to open an issue and let us know!"
+                }),
+                PropertyPaneHorizontalRule(),
+                PropertyPaneLink('supportLink', {
+                  href: "https://www.spsprinkles.com/",
+                  text: "SharePoint Sprinkles",
+                  target: "_blank"
+                }),
+                PropertyPaneLink('sourceLink', {
+                  href: "https://github.com/spsprinkles/m365-service-health/",
+                  text: "View Source on GitHub",
+                  target: "_blank"
+                })
+              ]
+            }
+          ]
         }
       ]
     };
