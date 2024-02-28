@@ -1,17 +1,19 @@
 import { DisplayMode, Environment, Version } from '@microsoft/sp-core-library';
-import { IPropertyPaneConfiguration, IPropertyPaneDropdownOption, PropertyPaneDropdown, PropertyPaneHorizontalRule, PropertyPaneLabel, PropertyPaneLink, PropertyPaneSlider, PropertyPaneTextField, PropertyPaneToggle } from '@microsoft/sp-property-pane';
+import {
+  IPropertyPaneConfiguration, PropertyPaneDropdown, PropertyPaneHorizontalRule, PropertyPaneLabel,
+  PropertyPaneLink, PropertyPaneSlider, PropertyPaneTextField, PropertyPaneToggle
+} from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
-import { PropertyFieldMultiSelect } from '@pnp/spfx-property-controls/lib/PropertyFieldMultiSelect';
-import PnPTelemetry from "@pnp/telemetry-js";
 import * as strings from 'M365ServiceHealthWebPartStrings';
+import { Components, PropertyPane } from "gd-sprest-bs";
 
 export interface IM365ServiceHealthWebPartProps {
   listName: string;
   moreInfo: string;
   moreInfoTooltip: string;
   onlyTiles: boolean;
-  showServices: string[];
+  showServices: string;
   tileColumnSize: number;
   tileCompact: boolean;
   tilePageSize: number;
@@ -59,14 +61,11 @@ declare const M365ServiceHealth: {
 };
 
 export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM365ServiceHealthWebPartProps> {
+  private _ddlServices: Components.IDropdown;
   private _hasRendered: boolean = false;
-  private _serviceOptions: IPropertyPaneDropdownOption[] = [];
+  private _serviceItems: Components.IDropdownItem[];
 
   public render(): void {
-    // Opt out of PnP Telemetry
-    const telemetry = PnPTelemetry.getInstance();
-    telemetry.optOut();
-
     // See if have rendered the solution
     if (this._hasRendered) {
       // Clear the element
@@ -95,7 +94,7 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
       moreInfo: this.properties.moreInfo,
       moreInfoTooltip: this.properties.moreInfoTooltip,
       onlyTiles: this.properties.onlyTiles,
-      showServices: this.properties.showServices,
+      showServices: this.getServices(true),
       tileColumnSize: this.properties.tileColumnSize,
       tileCompact: this.properties.tileCompact,
       tilePageSize: this.properties.tilePageSize,
@@ -104,21 +103,63 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
       title: this.properties.title,
       sourceUrl: this.properties.webUrl,
       onLoaded: () => {
-        // Clear the service options
-        this._serviceOptions = [];
-
         // Parse the services and set the options
-        M365ServiceHealth.getServices().forEach((value, key) => {
-          this._serviceOptions.push({
-            key: key,
-            text: value
-          });
+        const services = M365ServiceHealth.getServices();
+        this._serviceItems = [];
+        services.forEach((value, key) => {
+          this._serviceItems.push({
+            text: value,
+            value: key
+          })
         });
+
+        // Set the services
+        this.setServices();
       }
     });
 
     // Set the flag
     this._hasRendered = true;
+  }
+
+  // Gets the services to display
+  getServices(valuesOnly: boolean = false): string[] | undefined {
+    try {
+      // Convert the value to an array of dropdown items
+      const items = JSON.parse(this.properties.showServices);
+
+      // See if we are returning the values only
+      if (valuesOnly) {
+        // Parse the items and create an array of the values
+        const values: string[] = [];
+        for (let i = 0; i < items.length; i++) {
+          values.push(items[i].value);
+        }
+
+        // Return the values only
+        return values;
+      }
+
+      // Return items
+      return items;
+    }
+    catch { return undefined; }
+  }
+
+  // Sets the services dropdown items and default value
+  private setServices(): void {
+    // See if the dropdown was already rendered
+    if (this._ddlServices) {
+      // Update the dropdown properties
+      this._ddlServices.setItems(this._serviceItems);
+
+      // See if a value exists
+      const currentValue = this.getServices();
+      if (currentValue) {
+        // Set the selected values
+        this._ddlServices.setValue(currentValue);
+      }
+    }
   }
 
   // Add the logo to the PropertyPane Settings panel
@@ -203,28 +244,26 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
                   label: strings.TitleFieldLabel,
                   description: strings.TitleFieldDescription
                 }),
-                PropertyFieldMultiSelect('showServices', {
-                  key: 'showServices',
+                PropertyPane.MultiDropdownCheckbox("showServices", {
                   label: strings.ShowServicesFieldLabel,
-                  options: this._serviceOptions,
-                  selectedKeys: this.properties.showServices
-                })
-              ]
-            }
-          ]
-        },
-        {
-          groups: [
-            {
-              groupName: "Advanced Settings:",
-              groupFields: [
-                PropertyPaneTextField('moreInfo', {
-                  label: strings.MoreInfoFieldLabel,
-                  description: strings.MoreInfoFieldDescription
-                }),
-                PropertyPaneTextField('moreInfoTooltip', {
-                  label: strings.MoreInfoTooltipFieldLabel,
-                  description: strings.MoreInfoTooltipFieldDescription
+                  description: "This is a custom control that doesn't affect this app.",
+                  placeholder: "Select Services",
+                  properties: this.properties,
+                  tooltip: "This is my tooltip",
+                  items: this._serviceItems,
+                  onRendered: (ddl, props) => {
+                    // Set the component
+                    this._ddlServices = ddl as Components.IDropdown;
+
+                    // See if no items were set, but they exist now
+                    if (props?.items === null && this._serviceItems) {
+                      // Set the items
+                      this._ddlServices.setItems(this._serviceItems);
+
+                      // Set the selected values
+                      this.setServices();
+                    }
+                  }
                 }),
                 PropertyPaneTextField('timeFormat', {
                   label: strings.TimeFormatFieldLabel,
