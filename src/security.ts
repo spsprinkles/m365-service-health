@@ -12,16 +12,16 @@ export class Security {
     // Admin
     private static _isAdmin: boolean = false;
     static get IsAdmin(): boolean { return this._isAdmin; }
-    private static _adminGroup: Types.SP.Group = null;
-    static get AdminGroup(): Types.SP.Group { return this._adminGroup; }
+    private static _adminGroup: Types.SP.GroupOData = null;
+    static get AdminGroup(): Types.SP.GroupOData { return this._adminGroup; }
 
     // Members
-    private static _memberGroup: Types.SP.Group = null;
-    static get MemberGroup(): Types.SP.Group { return this._memberGroup; }
+    private static _memberGroup: Types.SP.GroupOData = null;
+    static get MemberGroup(): Types.SP.GroupOData { return this._memberGroup; }
 
     // Visitors
-    private static _visitorGroup: Types.SP.Group = null;
-    static get VisitorGroup(): Types.SP.Group { return this._visitorGroup; }
+    private static _visitorGroup: Types.SP.GroupOData = null;
+    static get VisitorGroup(): Types.SP.GroupOData { return this._visitorGroup; }
 
     // Initializes the class
     static init(): PromiseLike<void> {
@@ -68,7 +68,7 @@ export class Security {
         });
     }
 
-    static hasPermissions():PromiseLike<boolean> {
+    static hasPermissions(): PromiseLike<boolean> {
         // See if the user has permissions
         return this._listSecurity.checkUserPermissions();
     }
