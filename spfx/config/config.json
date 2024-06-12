@@ -11,8 +11,14 @@
       ]
     }
   },
-  "externals": {},
+  "externals": {
+    "main-lib": {
+      "globalName": "main-lib",
+      "path": "../dist/m365-service-health.min.js"
+    }
+  },
   "localizedResources": {
-    "M365ServiceHealthWebPartStrings": "lib/webparts/m365ServiceHealthWp/loc/{locale}.js"
+    "M365ServiceHealthWebPartStrings": "lib/webparts/m365ServiceHealthWp/loc/{locale}.js",
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
   }
 }
