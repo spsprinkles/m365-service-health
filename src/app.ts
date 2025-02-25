@@ -180,7 +180,7 @@ export class App {
                     props.brand = div;
                 },
                 onRendered: (el) => {
-                    let brand = el.querySelector("a.navbar-brand") as HTMLAnchorElement;
+                    let brand = el.querySelector(".navbar-brand") as HTMLAnchorElement;
                     if (Strings.MoreInfo && common.isValidUrl(Strings.MoreInfo)) {
                         brand.href = Strings.MoreInfo;
                         // Render a tooltip to show more info
