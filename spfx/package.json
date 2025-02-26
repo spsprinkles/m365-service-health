@@ -1,6 +1,6 @@
 {
   "name": "m365-service-health",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "private": true,
   "engines": {
     "node": ">=18.17.1 <19.0.0"
@@ -19,9 +19,6 @@
     "@microsoft/sp-office-ui-fabric-core": "1.18.2",
     "@microsoft/sp-property-pane": "1.18.2",
     "@microsoft/sp-webpart-base": "1.18.2",
-    "@pnp/spfx-property-controls": "^3.15.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
     "tslib": "2.3.1"
   },
   "devDependencies": {

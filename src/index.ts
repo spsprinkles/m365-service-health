@@ -5,6 +5,7 @@ import { Configuration } from "./cfg";
 import { getIcon, invertIconColor } from "./common";
 import { DataSource } from "./ds";
 import { InstallationModal } from "./install";
+import { Services } from "./propertyPane";
 import { Security } from "./security";
 import Strings, { setContext } from "./strings";
 
@@ -41,6 +42,7 @@ const GlobalVariable = {
     getServices: () => { return DataSource.Services; },
     listName: Strings.Lists.Main,
     moreInfoTooltip: Strings.MoreInfoTooltip,
+    propertyPaneServices: Services,
     onlyTiles: Strings.OnlyTiles,
     render: (props: IProps) => {
         // See if the page context exists

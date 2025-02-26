@@ -2,8 +2,6 @@ import { DisplayMode, Environment, Version } from '@microsoft/sp-core-library';
 import { IPropertyPaneConfiguration, IPropertyPaneDropdownOption, PropertyPaneDropdown, PropertyPaneHorizontalRule, PropertyPaneLabel, PropertyPaneLink, PropertyPaneSlider, PropertyPaneTextField, PropertyPaneToggle } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
-import { PropertyFieldMultiSelect } from '@pnp/spfx-property-controls/lib/PropertyFieldMultiSelect';
-import PnPTelemetry from "@pnp/telemetry-js";
 import * as strings from 'M365ServiceHealthWebPartStrings';
 
 export interface IM365ServiceHealthWebPartProps {
@@ -11,7 +9,7 @@ export interface IM365ServiceHealthWebPartProps {
   moreInfo: string;
   moreInfoTooltip: string;
   onlyTiles: boolean;
-  showServices: string[];
+  showServices: string;
   tileColumnSize: number;
   tileCompact: boolean;
   tilePageSize: number;
@@ -23,11 +21,13 @@ export interface IM365ServiceHealthWebPartProps {
 
 // Reference the solution
 import "main-lib";
+import { IBasePropertyPane } from 'gd-sprest-bs/src/propertyPane/types';
 declare const M365ServiceHealth: {
   description: string;
   getLogo: () => SVGImageElement;
   getServices: () => Map<string, string>;
   listName: string;
+  propertyPaneServices: (key: string, label: string, properties: IM365ServiceHealthWebPartProps) => IBasePropertyPane;
   render: (props: {
     el: HTMLElement;
     context?: WebPartContext;
@@ -38,7 +38,7 @@ declare const M365ServiceHealth: {
     moreInfoTooltip?: string;
     onLoaded?: () => void;
     onlyTiles?: boolean;
-    showServices?: string[];
+    showServices?: string;
     tileColumnSize?: number;
     tileCompact?: boolean;
     tilePageSize?: number;
@@ -63,10 +63,6 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
   private _serviceOptions: IPropertyPaneDropdownOption[] = [];
 
   public render(): void {
-    // Opt out of PnP Telemetry
-    const telemetry = PnPTelemetry.getInstance();
-    telemetry.optOut();
-
     // See if have rendered the solution
     if (this._hasRendered) {
       // Clear the element
@@ -148,25 +144,6 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
     return Version.parse(this.context.manifest.version);
   }
 
-  // Checks if is in debug mode from the query string
-  private debug(): boolean {
-    // Get the parameters from the query string
-    let qs = document.location.search.split('?');
-    qs = qs.length > 1 ? qs[1].split('&') : [];
-    for (let i = 0; i < qs.length; i++) {
-      let qsItem = qs[i].split('=');
-      let key = qsItem[0];
-      let value = qsItem[1];
-
-      // See if this is the 'debug' key
-      if (key === "debug") {
-        // Return the item
-        return value === "true";
-      }
-    }
-    return false;
-  }
-
   protected get disableReactivePropertyChanges(): boolean { return true; }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
@@ -203,12 +180,7 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
                   label: strings.TitleFieldLabel,
                   description: strings.TitleFieldDescription
                 }),
-                PropertyFieldMultiSelect('showServices', {
-                  key: 'showServices',
-                  label: strings.ShowServicesFieldLabel,
-                  options: this._serviceOptions,
-                  selectedKeys: this.properties.showServices
-                })
+                M365ServiceHealth.propertyPaneServices("showServices", strings.ShowServicesFieldLabel, this.properties)
               ]
             }
           ]
@@ -247,13 +219,11 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
                 }),
                 PropertyPaneTextField('listName', {
                   label: strings.ListNameFieldLabel,
-                  description: strings.ListNameFieldDescription,
-                  disabled: !this.debug()
+                  description: strings.ListNameFieldDescription
                 }),
                 PropertyPaneTextField('webUrl', {
                   label: strings.WebUrlFieldLabel,
-                  description: strings.WebUrlFieldDescription,
-                  disabled: !this.debug()
+                  description: strings.WebUrlFieldDescription
                 })
               ]
             }

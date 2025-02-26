@@ -18,7 +18,6 @@
     }
   },
   "localizedResources": {
-    "M365ServiceHealthWebPartStrings": "lib/webparts/m365ServiceHealthWp/loc/{locale}.js",
-    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
+    "M365ServiceHealthWebPartStrings": "lib/webparts/m365ServiceHealthWp/loc/{locale}.js"
   }
 }

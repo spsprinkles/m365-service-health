@@ -1,6 +1,6 @@
 {
   "name": "m365-service-health",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "The M365 Service Health app is a solution that reads service health data from a SharePoint list and presents it to all users with an intuitive interface.",
   "main": "src/index.ts",
   "scripts": {
@@ -27,7 +27,7 @@
     "datatables.net": "^2.1.8",
     "datatables.net-bs5": "^2.1.8",
     "dattatable": "^2.11.36",
-    "gd-sprest-bs": "^10.13.69",
+    "gd-sprest-bs": "^10.13.72",
     "jquery": "^3.7.1",
     "moment": "^2.30.1",
     "moment-timezone": "^0.5.44"

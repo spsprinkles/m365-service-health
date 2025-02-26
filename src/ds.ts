@@ -37,7 +37,7 @@ export class DataSource {
     static get ListItems(): IListItem[] { return this._list.Items; }
     static getFilteredItems(): IListItem[] {
         // See if we are showing all services
-        if (Strings.ShowServices == null) { return this.List.Items; }
+        if (Strings.ShowServices == null || Strings.ShowServices == "[]") { return this.List.Items; }
 
         // Parse the items
         let items: IListItem[] = [];
