@@ -10,9 +10,9 @@
                 "workflowEntityId": null,
                 "processAdvisorMetadata": null,
                 "flowChargedByPaygo": null,
-                "flowclientsuspensionreason": "AllActionsFailingDetected",
-                "flowclientsuspensiontime": "2024-12-23T05:53:19.9931342Z",
-                "flowclientsuspensionreasondetails": "Your flow has failed consistently for 14 days. We disabled it on 12/23/2024 5:53:19 AM.",
+                "flowclientsuspensionreason": "None",
+                "flowclientsuspensiontime": null,
+                "flowclientsuspensionreasondetails": null,
                 "creator": {
                     "id": "4af50d87-e728-484e-874c-3f4536b38fee",
                     "type": "User",
@@ -20,8 +20,10 @@
                 },
                 "provisioningMethod": "FromDefinition",
                 "failureAlertSubscription": true,
-                "clientLastModifiedTime": "2025-02-26T21:18:11.9301878Z",
-                "connectionKeySavedTimeKey": "2024-12-09T05:53:06.9220102Z"
+                "clientLastModifiedTime": "2025-03-05T14:26:33.7117272Z",
+                "connectionKeySavedTimeKey": "2025-03-05T14:26:33.7117272Z",
+                "creationSource": null,
+                "modifiedSources": "Portal"
             },
             "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
             "contentVersion": "undefined",
@@ -60,7 +62,7 @@
                     },
                     "type": "Http",
                     "inputs": {
-                        "uri": "https://login.microsoftonline.com/[TenantId]/oauth2/v2.0/token",
+                        "uri": "https://login.microsoftonline.com/@{variables('tenant_id')}/oauth2/v2.0/token",
                         "method": "POST",
                         "headers": {
                             "Content-Type": "application/x-www-form-urlencoded"
@@ -68,7 +70,7 @@
                         "body": "client_id=@{variables('client_id')}&client_secret=@{variables('client_secret')}&grant_type=client_credentials&scope=https://graph.microsoft.com/.default"
                     }
                 },
-                "Set_Client_ID": {
+                "Set_Tenant_ID": {
                     "runAfter": {
                         "Define_Services_to_Get": [
                             "Succeeded"
@@ -81,9 +83,29 @@
                     "inputs": {
                         "variables": [
                             {
+                                "name": "tenant_id",
+                                "type": "string",
+                                "value": "Enter Tenant ID"
+                            }
+                        ]
+                    }
+                },
+                "Set_Client_ID": {
+                    "runAfter": {
+                        "Set_Tenant_ID": [
+                            "Succeeded"
+                        ]
+                    },
+                    "metadata": {
+                        "operationMetadataId": "c57b140a-6c2e-4a0f-b0ea-7f5d930528fd"
+                    },
+                    "type": "InitializeVariable",
+                    "inputs": {
+                        "variables": [
+                            {
                                 "name": "client_id",
                                 "type": "string",
-                                "value": "[Enter Client ID]"
+                                "value": "Enter Client ID"
                             }
                         ]
                     }
@@ -103,7 +125,7 @@
                             {
                                 "name": "client_secret",
                                 "type": "string",
-                                "value": "[Enter Client Secret]"
+                                "value": "Enter Client Secret"
                             }
                         ]
                     }
@@ -127,23 +149,6 @@
                             }
                         ]
                     }
-                },
-                "Define_Services_to_Get": {
-                    "runAfter": {},
-                    "metadata": {
-                        "operationMetadataId": "2250d107-2cf7-40ab-af59-6b394baffdf8"
-                    },
-                    "type": "InitializeVariable",
-                    "inputs": {
-                        "variables": [
-                            {
-                                "name": "services",
-                                "type": "string",
-                                "value": "'Microsoft 365', 'Planner', 'Microsoft Power Automate', 'Power BI', 'Power Apps', 'Microsoft Forms', 'Microsoft Stream', 'SharePoint Online'"
-                            }
-                        ]
-                    },
-                    "description": "If you want to get a subset, you will need to filter for this in Get Service Health."
                 },
                 "Get_Service_Health": {
                     "runAfter": {
