@@ -1,8 +1,8 @@
 {
     "schema": "1.0",
     "details": {
-        "displayName": "Site Admin Tool",
-        "description": "The flow associated with processing items for the site admin tool.",
+        "displayName": "M365 Service Health",
+        "description": "Flow to get the current health of the M365 services from the admin center and store them in a SharePoint list.",
         "createdTime": "2025-03-05T15:12:00.4915173Z",
         "packageTelemetryId": "21fd8ed2-b1de-476b-96bc-1abab2fa204c",
         "creator": "N/A",
