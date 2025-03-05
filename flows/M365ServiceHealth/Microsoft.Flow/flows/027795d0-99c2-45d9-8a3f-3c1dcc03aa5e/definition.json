@@ -20,8 +20,8 @@
                 },
                 "provisioningMethod": "FromDefinition",
                 "failureAlertSubscription": true,
-                "clientLastModifiedTime": "2025-03-05T14:26:33.7117272Z",
-                "connectionKeySavedTimeKey": "2025-03-05T14:26:33.7117272Z",
+                "clientLastModifiedTime": "2025-03-05T14:34:04.7593119Z",
+                "connectionKeySavedTimeKey": "2025-03-05T14:34:04.7593119Z",
                 "creationSource": null,
                 "modifiedSources": "Portal"
             },
@@ -71,11 +71,7 @@
                     }
                 },
                 "Set_Tenant_ID": {
-                    "runAfter": {
-                        "Define_Services_to_Get": [
-                            "Succeeded"
-                        ]
-                    },
+                    "runAfter": {},
                     "metadata": {
                         "operationMetadataId": "c57b140a-6c2e-4a0f-b0ea-7f5d930528fd"
                     },
@@ -85,7 +81,7 @@
                             {
                                 "name": "tenant_id",
                                 "type": "string",
-                                "value": "Enter Tenant ID"
+                                "value": "Set Tenant Id"
                             }
                         ]
                     }
@@ -105,7 +101,7 @@
                             {
                                 "name": "client_id",
                                 "type": "string",
-                                "value": "Enter Client ID"
+                                "value": "Set Client Id"
                             }
                         ]
                     }
@@ -125,7 +121,7 @@
                             {
                                 "name": "client_secret",
                                 "type": "string",
-                                "value": "Enter Client Secret"
+                                "value": "Set Client Secret"
                             }
                         ]
                     }
