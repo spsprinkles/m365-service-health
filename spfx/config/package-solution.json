@@ -3,7 +3,7 @@
   "solution": {
     "name": "m365-service-health",
     "id": "a57dae0b-0614-4f78-9c7f-e017eb4b5df8",
-    "version": "0.0.8.0",
+    "version": "0.0.8.1",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,

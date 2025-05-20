@@ -5,6 +5,7 @@ import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as strings from 'M365ServiceHealthWebPartStrings';
 
 export interface IM365ServiceHealthWebPartProps {
+  darkTheme: boolean;
   listName: string;
   moreInfo: string;
   moreInfoTooltip: string;
@@ -31,6 +32,7 @@ declare const M365ServiceHealth: {
   render: (props: {
     el: HTMLElement;
     context?: WebPartContext;
+    darkTheme?: boolean;
     displayMode?: DisplayMode;
     envType?: number;
     listName?: string;
@@ -85,6 +87,7 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
     M365ServiceHealth.render({
       el: this.domElement,
       context: this.context,
+      darkTheme: this.properties.darkTheme,
       displayMode: this.displayMode,
       envType: Environment.type,
       listName: this.properties.listName,
@@ -154,6 +157,11 @@ export default class M365ServiceHealthWebPart extends BaseClientSideWebPart<IM36
             {
               groupName: "Basic Settings:",
               groupFields: [
+                PropertyPaneToggle('darkTheme', {
+                  label: strings.DarkThemeFieldLabel,
+                  offText: "Dark theme is currently disabled.",
+                  onText: "Dark theme is currently enabled."
+                }),
                 PropertyPaneToggle('tileCompact', {
                   label: strings.TileCompactFieldLabel,
                   offText: "Standard",

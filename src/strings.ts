@@ -18,6 +18,7 @@ const Strings = {
     AppElementId: "m365-service-health",
     GlobalVariable: "M365ServiceHealth",
     IsClassic: true,
+    IsDarkTheme: false,
     Lists: {
         Main: "M365 Service Health"
     },

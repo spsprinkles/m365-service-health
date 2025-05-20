@@ -16,6 +16,7 @@ import "./styles.scss";
 interface IProps {
     el: HTMLElement;
     context?: any;
+    darkTheme?: boolean;
     displayMode?: number;
     envType?: number;
     listName?: string;
@@ -60,6 +61,9 @@ const GlobalVariable = {
                 Configuration._configuration.ListCfg[0].ListInformation.Title = props.listName;
             }
         }
+
+        // Update the dark theme flag
+        Strings.IsDarkTheme = props.darkTheme ? true : false;
 
         // Update the MoreInfo from SPFx title field
         props.moreInfo ? Strings.MoreInfo = props.moreInfo : Strings.MoreInfo = null;

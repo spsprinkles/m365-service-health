@@ -1,4 +1,5 @@
 declare interface IM365ServiceHealthWebPartStrings {
+  DarkThemeFieldLabel: string;
   ListNameFieldDescription: string;
   ListNameFieldLabel: string;
   MoreInfoFieldDescription: string;

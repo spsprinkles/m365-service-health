@@ -1,5 +1,6 @@
-define([], function() {
+define([], function () {
   return {
+    "DarkThemeFieldLabel": "Dark Theme",
     "ListNameFieldDescription": "The name of the list to read the data from",
     "ListNameFieldLabel": "List Name",
     "MoreInfoFieldDescription": "A link (URL) to another page for more information",

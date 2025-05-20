@@ -85,6 +85,9 @@ export class App {
         // Set the default timezone for moment
         moment.tz.setDefault(Strings.TimeZone);
 
+        // Set the default theme for the tooltip
+        let tooltipTheme = Strings.IsDarkTheme ? Components.TooltipTypes.Dark : Components.TooltipTypes.LightBorder;
+
         // Create the dashboard
         let dashboard = new Dashboard({
             el,
@@ -186,7 +189,7 @@ export class App {
                         // Render a tooltip to show more info
                         Components.Tooltip({
                             content: Strings.MoreInfoTooltip ? Strings.MoreInfoTooltip : "View more information",
-                            type: Components.TooltipTypes.LightBorder,
+                            type: tooltipTheme,
                             target: brand
                         });
                     } else {
@@ -259,7 +262,7 @@ export class App {
                         if ((common.getStatusDescription(item.ServiceStatus).length > 75) && !Strings.TileCompact) {
                             Components.Tooltip({
                                 content: common.getStatusDescription(item.ServiceStatus),
-                                type: Components.TooltipTypes.LightBorder,
+                                type: tooltipTheme,
                                 target: p
                             });
                         }
@@ -274,7 +277,7 @@ export class App {
                     icon.style.pointerEvents = "auto";
                     Components.Tooltip({
                         content: item.Title,
-                        type: Components.TooltipTypes.LightBorder,
+                        type: tooltipTheme,
                         target: icon as any
                     });
                     el.appendChild(icon);
@@ -314,7 +317,7 @@ export class App {
                             Components.Tooltip({
                                 content: common.getClassificationDescription("incident"),
                                 options: { allowHTML: true, maxWidth: 500 },
-                                type: Components.TooltipTypes.LightBorder,
+                                type: tooltipTheme,
                                 target: div
                             });
                             if (incident == 1) {
@@ -340,7 +343,7 @@ export class App {
                             Components.Tooltip({
                                 content: common.getClassificationDescription("advisory"),
                                 options: { allowHTML: true },
-                                type: Components.TooltipTypes.LightBorder,
+                                type: tooltipTheme,
                                 target: div
                             });
                             if (advisory == 1) {
@@ -357,7 +360,7 @@ export class App {
                             Components.Tooltip({
                                 content: common.getClassificationDescription("error"),
                                 options: { allowHTML: true },
-                                type: Components.TooltipTypes.LightBorder,
+                                type: tooltipTheme,
                                 target: div
                             });
                             if (issues.length == 1) {
@@ -374,6 +377,7 @@ export class App {
                         Components.Tooltip({
                             el,
                             content: tooltip,
+                            type: tooltipTheme,
                             btnProps: {
                                 className: "p-0",
                                 text: btnText,
@@ -408,7 +412,7 @@ export class App {
                                             Components.Tooltip({
                                                 content: common.getClassificationDescription(issue.classification),
                                                 options: { allowHTML: true, maxWidth: 500 },
-                                                type: Components.TooltipTypes.LightBorder,
+                                                type: tooltipTheme,
                                                 target: classIcon
                                             });
                                         } else if (issue.classification == "advisory") {
@@ -418,7 +422,7 @@ export class App {
                                             Components.Tooltip({
                                                 content: common.getClassificationDescription(issue.classification),
                                                 options: { allowHTML: true },
-                                                type: Components.TooltipTypes.LightBorder,
+                                                type: tooltipTheme,
                                                 target: classIcon
                                             });
                                         } else {
@@ -428,7 +432,7 @@ export class App {
                                             Components.Tooltip({
                                                 content: common.getClassificationDescription(issue.classification),
                                                 options: { allowHTML: true },
-                                                type: Components.TooltipTypes.LightBorder,
+                                                type: tooltipTheme,
                                                 target: classIcon
                                             });
                                         }
@@ -476,7 +480,7 @@ export class App {
                         Components.Tooltip({
                             content: common.getClassificationDescription("healthy"),
                             options: { allowHTML: true },
-                            type: Components.TooltipTypes.LightBorder,
+                            type: tooltipTheme,
                             target: div
                         });
                         // Render a div for the Healthy text
@@ -494,7 +498,7 @@ export class App {
                         icon.style.pointerEvents = "auto";
                         Components.Tooltip({
                             content: item.Title,
-                            type: Components.TooltipTypes.LightBorder,
+                            type: tooltipTheme,
                             target: icon as any
                         });
                         el.prepend(icon);
