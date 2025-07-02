@@ -14,7 +14,7 @@
   "externals": {
     "main-lib": {
       "globalName": "main-lib",
-      "path": "../dist/m365-service-health.min.js"
+      "path": "../dist/m365-service-health.js"
     }
   },
   "localizedResources": {

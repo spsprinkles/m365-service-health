@@ -316,7 +316,6 @@ export class App {
                             div.appendChild(exclamationTriangleFill(20, 20));
                             Components.Tooltip({
                                 content: common.getClassificationDescription("incident"),
-                                options: { allowHTML: true, maxWidth: 500 },
                                 type: tooltipTheme,
                                 target: div
                             });
@@ -342,7 +341,6 @@ export class App {
                             div.appendChild(infoCircleFill(20, 20));
                             Components.Tooltip({
                                 content: common.getClassificationDescription("advisory"),
-                                options: { allowHTML: true },
                                 type: tooltipTheme,
                                 target: div
                             });
@@ -359,7 +357,6 @@ export class App {
                             div.appendChild(xCircleFill(20, 20));
                             Components.Tooltip({
                                 content: common.getClassificationDescription("error"),
-                                options: { allowHTML: true },
                                 type: tooltipTheme,
                                 target: div
                             });
@@ -378,6 +375,9 @@ export class App {
                             el,
                             content: tooltip,
                             type: tooltipTheme,
+                            options: {
+                                trigger: "click"
+                            },
                             btnProps: {
                                 className: "p-0",
                                 text: btnText,
@@ -411,7 +411,6 @@ export class App {
                                             classIcon.appendChild(exclamationTriangleFill(20, 20));
                                             Components.Tooltip({
                                                 content: common.getClassificationDescription(issue.classification),
-                                                options: { allowHTML: true, maxWidth: 500 },
                                                 type: tooltipTheme,
                                                 target: classIcon
                                             });
@@ -421,7 +420,6 @@ export class App {
                                             classIcon.appendChild(infoCircleFill(20, 20));
                                             Components.Tooltip({
                                                 content: common.getClassificationDescription(issue.classification),
-                                                options: { allowHTML: true },
                                                 type: tooltipTheme,
                                                 target: classIcon
                                             });
@@ -431,7 +429,6 @@ export class App {
                                             classIcon.appendChild(xCircleFill(20, 20));
                                             Components.Tooltip({
                                                 content: common.getClassificationDescription(issue.classification),
-                                                options: { allowHTML: true },
                                                 type: tooltipTheme,
                                                 target: classIcon
                                             });
@@ -440,6 +437,9 @@ export class App {
                                         let issueTitle = document.createElement("h6");
                                         issueTitle.className = "d-inline-flex issue-title mb-0";
                                         issueTitle.innerHTML = common.uppercaseFirst(issue.classification);
+                                        if (issue.id) {
+                                            issueTitle.innerHTML += ` (${issue.id})`;
+                                        }
 
                                         let issueText = document.createElement("p");
                                         issueText.className = "mb-0";
@@ -479,7 +479,6 @@ export class App {
                         div.appendChild(checkCircleFill(20, 20));
                         Components.Tooltip({
                             content: common.getClassificationDescription("healthy"),
-                            options: { allowHTML: true },
                             type: tooltipTheme,
                             target: div
                         });
