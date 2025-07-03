@@ -375,9 +375,6 @@ export class App {
                             el,
                             content: tooltip,
                             type: tooltipTheme,
-                            options: {
-                                trigger: "click"
-                            },
                             btnProps: {
                                 className: "p-0",
                                 text: btnText,
