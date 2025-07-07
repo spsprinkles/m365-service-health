@@ -131,8 +131,11 @@ export class App {
             },
             header: {
                 onRendered: (el) => {
+                    // Remove the margin
                     el.classList.remove("mx-75");
-                    let header = el.querySelector("div.header") as HTMLDivElement;
+
+                    // Update the header
+                    let header = el.firstChild as HTMLDivElement;
                     header.classList.remove("row");
                     header.classList.remove("py-5");
                     header.innerHTML = "";
